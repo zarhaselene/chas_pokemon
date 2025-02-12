@@ -30,16 +30,16 @@ export default function PokemonCard({ pokemon }) {
   return (
     <div
       key={id}
-      className="border-2 w-full h-96 flex flex-col items-center mb-2 rounded-md bg-gray-50 justify-center"
-    >
-      <Link href={`/pokemon/${id}`}>{pokemon.name.toUpperCase()}</Link>
-      <img
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
-        alt={pokemon.name}
-        width={150}
-        height={150}
-      />
-
+      className="border-2 w-full h-96 flex flex-col items-center mb-2 rounded-md bg-gray-50 justify-center">
+      <Link className="flex flex-col items-center" href={`/pokemon/${id}`}>
+        {pokemon.name.toUpperCase()}
+        <img
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
+          alt={pokemon.name}
+          width={150}
+          height={150}
+        />
+      </Link>
       <p>
         {pokemon.types
           .map((type) => (
