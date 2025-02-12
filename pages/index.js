@@ -59,15 +59,6 @@ export default function Home() {
         <p className="text-2xl">PokeDex</p>
       </div>
 
-      {/* Länk till bookmarks-sidan */}
-      <div className="text-center my-4">
-        <Link href="/bookmarks">
-          <span className="inline-block px-6 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-lg">
-            Favorite Pokémons
-          </span>
-        </Link>
-      </div>
-
       <div className="grid grid-cols-6 place-items-center gap-2">
         {pokemons.slice(0, visible).map((pokemon, index) => {
           return <PokemonCard key={pokemon.id} pokemon={pokemon} />;
