@@ -14,10 +14,7 @@ import LoadMoreButton from "./components/LoadMoreButton";
 - Use Card and Search component in Bookmarks.js
 - Make a working hamburger icon that displays a menu
 - Maybe add a search bar that let's you find pokemon
-*/ 
-
-
-
+*/
 
 export default function Home() {
   const [pokemons, setPokemons] = useState([]);
