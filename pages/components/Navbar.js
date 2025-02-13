@@ -1,6 +1,5 @@
-import {React, } from "react";
+import { React } from "react";
 import { Menu, Search, User } from "lucide-react";
-
 
 const Header = () => {
   return (
@@ -9,7 +8,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
-         
+            <img src="pokeball.png" width="50" height="50" />
           </div>
 
           {/* Navigation */}
