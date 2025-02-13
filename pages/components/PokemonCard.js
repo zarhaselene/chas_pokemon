@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import FavoriteBtn from "./FavoriteBtn";
+import {AiFillSound} from "react-icons/ai";
 
 const typeColors = {
   grass: "bg-green-600",
@@ -35,6 +36,10 @@ export default function PokemonCard({pokemon}) {
       <div className="absolute top-0 right-1">
         <FavoriteBtn pokemon={{id, name: pokemon.name}} />
       </div>
+      <div className="absolute top-2 left-2">
+        <AiFillSound />
+      </div>
+
       <Link className="flex flex-col items-center" href={`/pokemon/${id}`}>
         <img
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
@@ -43,7 +48,6 @@ export default function PokemonCard({pokemon}) {
           height={150}
         />
       </Link>
-
       <div className="flex flex-col justify-start w-full ml-6">
         <p className="font-semibold"> {pokemon.name.toUpperCase()}</p>
         <p className="text-gray-400 font-semibold font-mono">
