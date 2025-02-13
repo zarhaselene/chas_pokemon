@@ -3,36 +3,39 @@ import Link from "next/link";
 import FavoriteBtn from "./FavoriteBtn";
 
 const typeColors = {
-  grass: "text-green-600",
-  fire: "text-red-600",
-  water: "text-blue-600",
-  electric: "text-yellow-500",
-  psychic: "text-purple-600",
-  ice: "text-cyan-500",
-  fighting: "text-orange-600",
-  poison: "text-purple-700",
-  ground: "text-yellow-700",
-  flying: "text-indigo-500",
-  bug: "text-lime-600",
-  rock: "text-gray-600",
-  ghost: "text-violet-600",
-  dragon: "text-indigo-700",
-  dark: "text-gray-700",
-  steel: "text-gray-400",
-  fairy: "text-pink-500",
-  normal: "text-gray-500",
+  grass: "bg-green-600",
+  fire: "bg-red-600",
+  water: "bg-blue-600",
+  electric: "bg-yellow-500",
+  psychic: "bg-purple-600",
+  ice: "bg-cyan-500",
+  fighting: "bg-orange-600",
+  poison: "bg-purple-700",
+  ground: "bg-yellow-700",
+  flying: "bg-indigo-500",
+  bug: "bg-lime-600",
+  rock: "bg-gray-600",
+  ghost: "bg-violet-600",
+  dragon: "bg-indigo-700",
+  dark: "bg-gray-700",
+  steel: "bg-gray-400",
+  fairy: "bg-pink-500",
+  normal: "bg-gray-500",
 };
 
-export default function PokemonCard({ pokemon }) {
+export default function PokemonCard({pokemon}) {
   const id = pokemon.id;
   const types = pokemon.types || [];
 
   return (
     <div
       key={id}
-      className="border-2 w-full h-96 flex flex-col items-center mb-2 rounded-md bg-gray-50 justify-center">
+      className="border-2 w-full p-8 flex flex-col items-center mb-2 rounded-lg shadow-md bg-white justify-center relative transition-all duration-300 hover:scale-105"
+    >
+      <div className="absolute top-0 right-1">
+        <FavoriteBtn pokemon={{id, name: pokemon.name}} />
+      </div>
       <Link className="flex flex-col items-center" href={`/pokemon/${id}`}>
-        {pokemon.name.toUpperCase()}
         <img
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
           alt={pokemon.name}
@@ -40,17 +43,28 @@ export default function PokemonCard({ pokemon }) {
           height={150}
         />
       </Link>
-      <p>
-        {pokemon.types
-          .map((type) => (
-            <div className={`${typeColors[type] || "text-black"}`}>
-              {" "}
-              <span>{type}</span>
-            </div>
-          ))
-          .reduce((prev, curr) => [prev, " ", curr])}
+
+      <div className="flex flex-col justify-start w-full ml-6">
+        <p className="font-semibold"> {pokemon.name.toUpperCase()}</p>
+        <p className="text-gray-400 font-semibold font-mono">
+          {" "}
+          {"#0" + 0 + pokemon.id}{" "}
+        </p>
+      </div>
+      <p className="ml-4 flex w-full justify-start items-start">
+        <div className="flex space-x-2 ">
+          {pokemon.types.map((type) => (
+            <span
+              key={type}
+              className={`cursor-default text-white p-[2px] rounded-md font-semibold text-xs w-16 text-center ${
+                typeColors[type] || "bg-gray-500"
+              }`}
+            >
+              {type}
+            </span>
+          ))}
+        </div>
       </p>
-      <FavoriteBtn pokemon={{ id, name: pokemon.name }} />
     </div>
   );
 }
