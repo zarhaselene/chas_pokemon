@@ -7,6 +7,10 @@ import { FaVolumeUp } from "react-icons/fa";
 const PlayPokemonCry = ({ name }) => {
   const audioRef = useRef(null);
 
+  {
+    console.log("hello world");
+  }
+
   const handlePlay = () => {
     if (audioRef.current) {
       audioRef.current.play();
@@ -18,7 +22,10 @@ const PlayPokemonCry = ({ name }) => {
       <FaVolumeUp className="text-xl" onClick={handlePlay} />
       <audio
         ref={audioRef}
-        src={`https://play.pokemonshowdown.com/audio/cries/${name.replace("-","")}.mp3`}
+        src={`https://play.pokemonshowdown.com/audio/cries/${name.replace(
+          "-",
+          ""
+        )}.mp3`}
       />
     </div>
   );
