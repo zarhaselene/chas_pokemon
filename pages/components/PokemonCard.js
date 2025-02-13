@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import FavoriteBtn from "./FavoriteBtn";
-import {AiFillSound} from "react-icons/ai";
+import { AiFillSound } from "react-icons/ai";
+import PlayPokemonCry from "./PlayPokemonCry";
 
 const typeColors = {
   grass: "bg-green-600",
@@ -24,7 +25,7 @@ const typeColors = {
   normal: "bg-gray-500",
 };
 
-export default function PokemonCard({pokemon}) {
+export default function PokemonCard({ pokemon }) {
   const id = pokemon.id;
   const types = pokemon.types || [];
 
@@ -34,10 +35,10 @@ export default function PokemonCard({pokemon}) {
       className="border-2 w-full p-8 flex flex-col items-center mb-2 rounded-lg shadow-md bg-white justify-center relative transition-all duration-300 hover:scale-105"
     >
       <div className="absolute top-0 right-1">
-        <FavoriteBtn pokemon={{id, name: pokemon.name}} />
+        <FavoriteBtn pokemon={{ id, name: pokemon.name }} />
       </div>
-      <div className="absolute top-2 left-2">
-        <AiFillSound />
+      <div className="absolute top-0 left-0 cursor-pointer">
+        <PlayPokemonCry name={pokemon.name} />
       </div>
 
       <Link className="flex flex-col items-center" href={`/pokemon/${id}`}>
@@ -57,7 +58,7 @@ export default function PokemonCard({pokemon}) {
       </div>
       <p className="ml-4 flex w-full justify-start items-start">
         <div className="flex space-x-2 ">
-          {pokemon.types.map((type) => (
+          {(pokemon.types || []).map((type) => (
             <span
               key={type}
               className={`cursor-default text-white p-[2px] rounded-md font-semibold text-xs w-16 text-center ${

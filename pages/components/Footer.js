@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import {Facebook, Twitter, Instagram, Mail} from "lucide-react";
+import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-700 mt-auto border-t-4 border-blue-700 text-gray-200 p-2 ">
+    <footer className="bg-gray-700 mt-auto border-t-4 border-blue-700 text-gray-200 p-2 w-full">
       <div className="flex gap-10 md:justify-evenly">
         {/* Links */}
         <div>
