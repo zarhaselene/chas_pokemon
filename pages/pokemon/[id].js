@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import FavoriteBtn from "../components/FavoriteBtn";
+import PokemonCard from "../components/PokemonCard";
+import { FaArrowLeftLong } from "react-icons/fa6";
 
 const typeChart = {
   normal: { weak: ["fighting"], strong: [] },
@@ -51,6 +53,27 @@ const typeChart = {
   fairy: { weak: ["steel", "poison"], strong: ["dragon", "dark", "fighting"] },
 };
 
+const typeColors = {
+  grass: "bg-green-600",
+  fire: "bg-red-600",
+  water: "bg-blue-600",
+  electric: "bg-yellow-500",
+  psychic: "bg-purple-600",
+  ice: "bg-cyan-500",
+  fighting: "bg-orange-600",
+  poison: "bg-purple-700",
+  ground: "bg-yellow-700",
+  flying: "bg-indigo-500",
+  bug: "bg-lime-600",
+  rock: "bg-gray-600",
+  ghost: "bg-violet-600",
+  dragon: "bg-indigo-700",
+  dark: "bg-gray-700",
+  steel: "bg-gray-400",
+  fairy: "bg-pink-500",
+  normal: "bg-gray-500",
+};
+
 export default function PokemonInfoPage() {
   const router = useRouter();
   const { id } = router.query; // Get id from url
@@ -85,8 +108,6 @@ export default function PokemonInfoPage() {
     }
   }, [id]);
 
-  console.log("pokemonTypes", pokemon.types);
-
   const getTypeAdvantages = (types = []) => {
     const weaknesses = [];
     const strengths = [];
@@ -97,16 +118,15 @@ export default function PokemonInfoPage() {
       const type = typesObj?.type?.name;
       const typeInfo = typeChart[type];
       if (typeInfo) {
-       
         typeInfo.weak.forEach((weakness) => {
           if (!pokemonTypes.includes(weakness)) {
-          weaknesses.push({type: weakness, multiplier: 2})
+            weaknesses.push({ type: weakness });
           }
         });
-        
+
         typeInfo.strong.forEach((strength) => {
           if (!pokemonTypes.includes(strength)) {
-          strengths.push({type: strength, multiplier:2})
+            strengths.push({ type: strength });
           }
         });
       }
@@ -127,24 +147,6 @@ export default function PokemonInfoPage() {
       weaknesses: finalWeaknesses,
       strengths: finalStrengths,
     };
-
-    // const weaknesses = new Set();
-    // const strengths = new Set();
-    // if (Array.isArray(types)) {
-    //   types.forEach((typesObj) => {
-    //     const type = typesObj?.type?.name;
-    //     const typeInfo = typeChart[type];
-    //     if (typeInfo) {
-    //       typeInfo.weak.forEach((weakness) => weaknesses.add(weakness));
-    //       typeInfo.strong.forEach((strength) => strengths.add(strength));
-    //     }
-    //   });
-    // }
-
-    // return {
-    //   weaknesses: Array.from(weaknesses),
-    //   strengths: Array.from(strengths),
-    // };
   };
 
   const { weaknesses, strengths } = getTypeAdvantages(pokemon.types);
@@ -159,86 +161,164 @@ export default function PokemonInfoPage() {
   if (!pokemon) return <h1 className="text-center mt-5">Pokémon not found</h1>;
 
   return (
-    <div className="p-2">
-      <Link href="/">
-        <span className="text-blue-500 hover:underline mb-4 inline-block">
-          Tillbaka till startsidan
-        </span>
-      </Link>
-      <section className="">
-        <div className="">
-          <h1 className="text-xl font-semibold">Pokémon details</h1>
+    <div className="bg-gray-100 px-4 py-4 w-full min-h-screen  ">
+      {/* Back Link*/}
+      <div className="flex flex-row items-center mb-5">
+        <Link
+          href="/"
+          className=" flex flex-row items-center gap-2 text-blue-500 hover:underline "
+        >
+          <FaArrowLeftLong className="text-blue-500" />
+          Back
+        </Link>
+      </div>{" "}
+      <h1 className="text-4xl text-center mb-6">Pokémon details</h1>
+      {/*Pokenmon "Card" */}
+      <section className="bg-white rounded-lg p-4 shadow-lg overflow-hidden ">
+        {/*Name, ID, Favorite btn */}
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl sm:text-5xl font-semibold">
+            {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}{" "}
+            <span className="text-slate-400">
+              {pokemon.id < 10
+                ? `#00${pokemon.id}`
+                : pokemon.id < 100
+                ? `#0${pokemon.id}`
+                : `#${pokemon.id}`}
+            </span>
+          </h2>
           <FavoriteBtn pokemon={{ id: pokemon.id, name: pokemon.name }} />
-          <div className="">
-            <h2>Name: {pokemon.name}</h2>
-            <img src={pokemon.image} alt={pokemon.name} />
-            <img src={pokemon.shinyImage} alt={pokemon.name} />
-            <h1>Stats:</h1>
-            {pokemon.stats.map((statsObj, index) => (
+        </div>
+        {/* Image of Pokemons, normal & Shiny */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-5 p-5 m-4 ">
+          <div className="shadow-lg border-8 border-slate-200 rounded-md p-4">
+            <img
+              className="bg-white w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
+              src={pokemon.image}
+              alt={pokemon.name}
+            />
+          </div>
+          <div className="shadow-lg border-8 border-slate-200 rounded-md p-4">
+            <img
+              className="bg-white w-[200px] h-[200px] md:w-[300px] md:h-[300px] "
+              src={pokemon.shinyImage}
+              alt={pokemon.name}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-5">
+          <h2 className="font-bold text-xl">Types:</h2>
+          <div className="flex space-x-2">
+            <ul className="flex gap-2">
+              {(pokemon.types || []).map((typesObj, index) => (
+                <li
+                  className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center ${
+                    typeColors[typesObj.type.name]
+                  } capitalize || "bg-gray-500`}
+                  key={index}
+                >
+                  {typesObj.type.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex justify-center items-center gap-10 font-sans">
+            <div className="flex items-center flex-col bg-gray-100 px-8 sm:px-14 py-3 rounded-lg">
+              <p className="text-sm text-gray-600">Weight</p>
+              <p className="font-bold text-lg">{pokemon.weight / 10} kg</p>
+            </div>
+            <div className="flex flex-col items-center bg-gray-100 px-8 sm:px-14 py-3  rounded-lg ">
+              <p className="text-sm text-gray-600">Height</p>
+              <p className="font-bold text-lg text-black">
+                {pokemon.height / 10} m
+              </p>
+            </div>
+          </div>
+          <div>
+            <h1 className="font-bold text-xl mb-2 mt-5">Base stats:</h1>
+
+            {pokemon.stats?.map((statsObj) => (
               <div>
-                <div>{statsObj.stat.name}</div>
-                <div>{statsObj.base_stat}</div>
+                <div className="flex flex-row justify-between w-full">
+                  <p className="font-sans text-sm font-semibold capitalize">
+                    {statsObj.stat.name}
+                  </p>
+                  <p className="font-sans text-sm font-semibold">
+                    {statsObj.base_stat}
+                  </p>
+                </div>
+
+                <progress
+                  className="w-full rounded-t-lg"
+                  value={statsObj.base_stat}
+                  max="100"
+                />
+                {/* <div 
+                          className="bg-blue-500 h-2 rounded-full" 
+                          style={{ width: `${(stat.base_stat / 255) * 100}%` }}
+                        >
+                      </div> */}
               </div>
             ))}
-            <h2>Abilities:</h2>
-            <ul>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Abilities:</h2>
+            <div className="flex flex-wrap gap-2">
               {pokemon.abilities.map((abilityObj, index) => (
-                <li key={index}>{abilityObj.ability.name}</li>
+                <span
+                  key={index}
+                  className="bg-gray-100 px-3 py-1 rounded-md capitalize "
+                >
+                  {abilityObj.ability.name}
+                </span>
               ))}
-            </ul>
-            <h2>Types:</h2>
-            <ul>
-              {pokemon.types.map((typesObj, index) => (
-                <li key={index}>{typesObj.type.name}</li>
-              ))}
-            </ul>
-            {/* Display weaknesses and strengths */}
+            </div>
+          </div>
 
-            <h2>Weaknesses:</h2>
-            <ul>
-              {weaknesses.length ? (
-                weaknesses.map((weakness, index) => (
-                  <li key={index}>{weakness.type} (x{weakness.multiplier})</li>
-                ))
-              ) : (
-                <li>None</li>
-              )}
-            </ul>
+          {/* Display weaknesses and strengths */}
 
-            <h2>Resistances:</h2>
-            <ul>
-              {strengths.length ? (
-                strengths.map((strength, index) => (
-                  <li key={index}>{strength.type} (x{strength.multiplier})</li>
-                ))
-              ) : (
-                <li>None</li>
-              )}
-            </ul>
-
-            {/* <h2>Weaknesses:</h2>
-          <ul>
-          {weaknesses.length ? (
-            weaknesses.map((weakness, index) => (
-              <li key={index}>{weakness}</li>
-              ))
-              ) : (
-                <li>None</li>
+          <div className="flex gap-2 justify-around">
+            <div className="flex flex-col items-center">
+              <h2 className="text-xl font-semibold mb-4">Weaknesses:</h2>
+              <ul>
+                {weaknesses.length ? (
+                  weaknesses.map((weakness, index) => (
+                    <li
+                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                        typeColors[weakness.type]
+                      } || "bg-gray-500`}
+                      key={index}
+                    >
+                      {weakness.type}
+                    </li>
+                  ))
+                ) : (
+                  <li>None</li>
                 )}
-                </ul>
-                <h2>Strengths:</h2>
-                <ul>
+              </ul>
+            </div>
+            <div className="flex flex-col items-center">
+              <h2 className="text-xl font-semibold mb-4">Resistances:</h2>
+              <ul>
                 {strengths.length ? (
                   strengths.map((strength, index) => (
-                    <li key={index}>{strength}</li>
-                    ))
-                    ) : (
-                      <li>None</li>
-                      )}
-                    </ul> */}
-
-            <p>Weight: {pokemon.weight}</p>
-            <p>height: {pokemon.height}</p>
+                    <li
+                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                        typeColors[strength.type]
+                      } || "bg-gray-500`}
+                      key={index}
+                    >
+                      {strength.type.charAt(0).toUpperCase() +
+                        strength.type.slice(1)}
+                    </li>
+                  ))
+                ) : (
+                  <li>None</li>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </section>

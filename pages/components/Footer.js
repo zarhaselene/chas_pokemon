@@ -4,12 +4,12 @@ import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-700 mt-auto border-t-4 border-blue-700 text-gray-200 p-2 w-full">
-      <div className="flex gap-10 md:justify-evenly">
+    <footer className="bg-gray-700 mt-auto border-t-4 border-blue-700 text-gray-200 p-4 w-full">
+      <div className="flex flex-wrap justify-between gap-6 md:gap-10 md:justify-evenly text-center md:text-left">
         {/* Links */}
-        <div>
+        <div className="w-full md:w-auto">
           <h3 className="text-md font-semibold">Links</h3>
-          <ul className="text-xs ">
+          <ul className="text-sm space-y-1">
             <li>
               <Link href="/" className="hover:underline">
                 Home
@@ -37,10 +37,11 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        {/* Suport */}
-        <div>
+
+        {/* Support */}
+        <div className="w-full md:w-auto">
           <h3 className="text-md font-semibold">Support</h3>
-          <ul className="text-xs">
+          <ul className="text-sm space-y-1">
             <li>
               <Link href="/" className="hover:underline">
                 Services
@@ -70,28 +71,41 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div>
-          <h3 className="text-lg font-bold mb-4 ">Connect With Us</h3>
-          <div className="flex space-x-4 ">
-            <a href="" className="text-red-100 hover:text-white ">
+        <div className="w-full md:w-auto">
+          <h3 className="text-md font-semibold">Connect With Us</h3>
+          <div className="flex justify-center md:justify-start space-x-4 mt-2">
+            <a
+              href="#"
+              className="hover:text-red-500 text-white transition-colors duration-300"
+            >
               <Facebook size={24} />
             </a>
-            <a href="" className="text-red-100 hover:text-white ">
+            <a
+              href="#"
+              className="hover:text-red-500 text-white transition-colors duration-300"
+            >
               <Twitter size={24} />
             </a>
-            <a href="" className="text-red-100 hover:text-white ">
+            <a
+              href="#"
+              className="hover:text-red-500 text-white transition-colors duration-300"
+            >
               <Instagram size={24} />
             </a>
-            <a href="" className="text-red-100 hover:text-white ">
+            <a
+              href="#"
+              className="hover:text-red-500 text-white transition-colors duration-300"
+            >
               <Mail size={24} />
             </a>
           </div>
         </div>
       </div>
+
       {/* Copyright */}
-      <div className="border-t border-gray-600 mt-2 ">
-        <p className=" text-center text-sm mt-2">
-          © {new Date().getFullYear()} Pokémon All right reserved.
+      <div className="border-t border-gray-600 mt-4 pt-2 text-center">
+        <p className="text-sm">
+          © {new Date().getFullYear()} Pokémon. All rights reserved.
         </p>
       </div>
     </footer>

@@ -52,8 +52,11 @@ export default function PokemonCard({ pokemon }) {
       <div className="flex flex-col justify-start w-full ml-6">
         <p className="font-semibold"> {pokemon.name.toUpperCase()}</p>
         <p className="text-gray-400 font-semibold font-mono">
-          {" "}
-          {"#0" + 0 + pokemon.id}{" "}
+          {pokemon.id < 10
+            ? `#00${pokemon.id}`
+            : pokemon.id < 100
+            ? `#0${pokemon.id}`
+            : `#${pokemon.id}`}
         </p>
       </div>
       <p className="ml-4 flex w-full justify-start items-start">

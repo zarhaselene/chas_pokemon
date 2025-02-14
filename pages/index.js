@@ -5,15 +5,14 @@ import { SiPokemon } from "react-icons/si";
 import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import LoadMoreButton from "./components/LoadMoreButton";
-import Search from "./components/Search.js";
+import Hero from "./components/Hero";
+import Search from "./components/Search";
+
 /*
-- Mobil anpassa footer
 - Add a location for where you are in the header underline under the link
 - Finish [id].js
--̶ M̶a̶k̶e̶ a̶ S̶e̶a̶r̶c̶h̶ c̶o̶m̶p̶o̶n̶e̶n̶t̶
-- Use Card and Search component in Bookmarks.js
-- Make a working hamburger icon that displays a menu
 - Maybe add a search bar that let's you find pokemon
+- Hero component and add it to bookmarks?
 */
 
 export default function Home() {
@@ -23,29 +22,67 @@ export default function Home() {
   const [input, setInput] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
+    let isMounted = true;
+    let hasFetched = false;
+
+    // Kolla om vi redan har Pokémon sparade i localStorage
+    const storedPokemons = localStorage.getItem("pokemons");
+
+    if (storedPokemons) {
+      setPokemons(JSON.parse(storedPokemons));
+      setLoading(false);
+      return; // Avbryt fetch om vi redan har data
+    }
+
     async function fetchPokemons() {
       try {
         const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0"
+          "https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0",
+          { signal: controller.signal }
         );
+
+        if (!response.ok) throw new Error("Failed to fetch Pokémon data");
+        hasFetched = true;
+
         const data = await response.json();
+        const pokemonsList = await Promise.all(
+          data.results.map(async (pokemon) => {
+            const pokemonResponse = await fetch(pokemon.url, {
+              signal: controller.signal,
+            });
+            if (!pokemonResponse.ok)
+              throw new Error("Failed to fetch Pokémon details");
 
-        const pokemonsList = data.results.map((pokemon, index) => ({
-          id: index + 1,
-          name: pokemon.name,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-            index + 1
-          }.png`,
-        }));
+            const pokemonDetails = await pokemonResponse.json();
+            return {
+              id: pokemonDetails.id,
+              name: pokemonDetails.name,
+              image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonDetails.id}.png`,
+              types: pokemonDetails.types.map((type) => type.type.name),
+            };
+          })
+        );
 
-        setPokemons(pokemonsList);
+        if (isMounted) {
+          setPokemons(pokemonsList);
+          localStorage.setItem("pokemons", JSON.stringify(pokemonsList)); // Spara i localStorage
+        }
       } catch (error) {
-        console.error("Error fetching Pokémon data:", error);
+        if (error.name !== "AbortError") {
+          console.error("Error fetching Pokémon data:", error);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-      setLoading(false);
     }
 
     fetchPokemons();
+
+    return () => {
+      isMounted = false;
+      if (hasFetched) controller.abort();
+    };
   }, []);
 
   const filteredPokemons = pokemons.filter((pokemon) => {
@@ -53,6 +90,29 @@ export default function Home() {
     const idMatch = pokemon.id.toString().includes(input);
     return nameMatch || idMatch;
   });
+
+  if (pokemons.length === 0 && !loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen bg-red-500">
+        <div className="w-32 ">
+          <img
+            src="https://media.tenor.com/lc0bFgqDj4gAAAAi/pikachu-triste.gif"
+            alt="Sad pikachu"
+            className="animate-bounce"
+          />
+        </div>
+        <p className="mt-4 text-white text-lg font-semibold animate-pulse">
+          Failed to load Pokémons. Try refreshing.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="inline-flex items-center my-4 px-4 py-2 border-white border-2 text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -73,25 +133,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex flex-col text-white text-center mb-4 bg-red-500 pb-12 items-center gap-2">
-        <div className="flex items-center flex-col justify-center relative">
-          <SiPokemon size={200} className="text-center top-4 text-white" />
-          <img
-            src="https://media.tenor.com/7guvvXVPhG0AAAAi/pikachu-pokemon.gif"
-            width="126"
-            height="126"
-            alt="a pixel art of a pikachu jumping with a lightning bolt coming out of its tail."
-            className="max-w-[280px] bg-transparent md:absolute  md:right-[-140px] md:top-[20px]"
-          />
-        </div>
-        <h1 className="font-extrabold tracking-tight sm:text-5xl md:text-6xl text-4xl">
-          Welcome to the PokéDex
-        </h1>
-        <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl">
-          Explore the world of Pokémon with our comprehensive Pokédex
-        </p>
-        <Search input={input} setInput={setInput} />
-      </div>
+      {/* Hero */}
+      <Hero
+        title="Welcome to the PokéDex"
+        subtitle="Explore the world of Pokémon with our comprehensive Pokédex"
+        image="https://media.tenor.com/7guvvXVPhG0AAAAi/pikachu-pokemon.gif"
+      >
+        <Search input={input} setInput={setInput} width="md:w-[600px]" />
+      </Hero>
+
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
@@ -121,11 +171,11 @@ export default function Home() {
       <div className="bg-gray-50">
         <div className="flex flex-col justify-center items-center m-10">
           <h3 className="text-xl text-center font-semibold">
-            Watch This Pokémon Video
+            Pokémon theme song
           </h3>
           <iframe
             className="w-full h-96 mt-5 rounded-xl shadow-2xl"
-            src="https://www.youtube-nocookie.com/embed/JuYeHPFR3f0"
+            src="https://www.youtube-nocookie.com/embed/6xKWiCMKKJg"
             title="Pokémon Video"
             sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

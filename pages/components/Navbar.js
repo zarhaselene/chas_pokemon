@@ -1,8 +1,6 @@
 import { React, useState, useEffect } from "react";
-// import { Menu, Search, User, Heart, ChevronDown } from "lucide-react";
 import {
   Heart,
-  Search,
   User,
   Menu,
   ChevronDown,
@@ -25,12 +23,32 @@ import {
   Moon,
   Sparkles,
 } from "lucide-react";
+import { RxCrossCircled } from "react-icons/rx";
+import { FaSearch } from "react-icons/fa";
+import Search from "./Search.js";
+
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [types, setTypes] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileTypesOpen, setMobileTypesOpen] = useState(false);
+  const [activePage, setActivePage] = useState("home");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+        setMobileTypesOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/type")
@@ -91,26 +109,54 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/">
-              <img src="pokeball.png" width="50" height="50" />
-            </Link>
-          </div>
-
+          <AnimatePresence>
+            <motion.div
+              className="flex items-center"
+              whileHover={{ y: [0, -9, 0] }}
+              transition={{
+                duration: 0.9,
+                ease: "easeIn",
+                repeat: Infinity,
+              }}
+            >
+              <Link href="/">
+                <motion.img
+                  src="pokeball.png"
+                  width="50"
+                  height="50"
+                  alt="Pokeball"
+                />
+              </Link>
+            </motion.div>
+          </AnimatePresence>
           {/* Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
               <li>
                 <Link href="/" legacyBehavior>
-                  <a className="text-white hover:text-red-200 transition-colors">
+                  <a
+                    onClick={() => setActivePage("home")}
+                    className={`text-white hover:text-red-200 transition-colors ${
+                      activePage === "home"
+                        ? "underline underline-offset-2 font-semibold"
+                        : "text-white"
+                    } `}
+                  >
                     Home
                   </a>
                 </Link>
               </li>
               <div className="relative">
                 <button
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="text-white hover:text-red-200 transition-colors flex items-center"
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    setActivePage("types");
+                  }}
+                  className={`text-white hover:text-red-200 transition-colors flex items-center ${
+                    activePage === "types"
+                      ? "underline underline-offset-2 font-semibold"
+                      : "text-white"
+                  } `}
                 >
                   Pokémon Types
                   <ChevronDown
@@ -178,16 +224,26 @@ const Header = () => {
 
               <li>
                 <a
+                  onClick={() => setActivePage("service")}
                   href="#"
-                  className="text-white hover:text-red-200 transition-colors"
+                  className={`text-white hover:text-red-200 transition-colors ${
+                    activePage === "service"
+                      ? "underline underline-offset-2 font-semibold"
+                      : "text-white"
+                  } `}
                 >
                   Services
                 </a>
               </li>
               <li>
                 <a
+                  onClick={() => setActivePage("contact")}
                   href="#"
-                  className="text-white hover:text-red-200 transition-colors"
+                  className={`text-white hover:text-red-200 transition-colors ${
+                    activePage === "contact"
+                      ? "underline underline-offset-2 font-semibold"
+                      : "text-white"
+                  } `}
                 >
                   Contact
                 </a>
@@ -197,22 +253,157 @@ const Header = () => {
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
-            <Link href="/bookmarks" legacyBehavior>
-              <a className="text-white hover:text-red-200 transition-colors">
-                <Heart size={20} />
-              </a>
-            </Link>
-            <button className="text-white hover:text-red-200 transition-colors">
-              <Search size={20} />
-            </button>
-            <button className="text-white hover:text-red-200 transition-colors">
-              <User size={20} />
-            </button>
-            <button className="md:hidden text-white hover:text-red-200 transition-colors">
-              <Menu size={20} />
-            </button>
+            <AnimatePresence>
+              <Link href="/bookmarks" legacyBehavior>
+                <motion.a
+                  onClick={() => setActivePage("bookMark")}
+                  className="inline-block p-2 cursor-pointer"
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { type: "spring", stiffness: 300, damping: 20 },
+                  }}
+                  whileTap={{
+                    scale: 0.95,
+                    transition: { type: "spring", stiffness: 500, damping: 25 },
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 1, y: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 250,
+                      damping: 20,
+                      duration: 0.3,
+                    }}
+                  >
+                    <Heart
+                      fill={activePage === "bookMark" ? "white" : "transparent"}
+                      className={`text-white transition-all duration-300 ${
+                        activePage === "b"
+                          ? "text-red-500"
+                          : "hover:text-red-200"
+                      }`}
+                    />
+                  </motion.div>
+                </motion.a>
+              </Link>
+
+              <motion.button className="text-white hover:text-red-200 transition-colors relative">
+                <FaSearch
+                  size={20}
+                  onClick={() => setSearchOpen(!searchOpen)}
+                  className={` ${
+                    searchOpen
+                      ? "ml-1 absolute left-2 top-1/2 transform -translate-y-1/2 text-red-700 text-xl "
+                      : ""
+                  }`}
+                />
+                <RxCrossCircled
+                  onClick={() => {
+                    setSearchOpen(false);
+                  }}
+                  className={` ${
+                    searchOpen === true
+                      ? "ml-1 absolute right-2 top-1/2 transform -translate-y-1/2 text-red-700 text-xl"
+                      : "hidden"
+                  }`}
+                />
+
+                {searchOpen ? (
+                  <div>
+                    <input
+                      type="text"
+                      className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border-red-700 border-2 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </motion.button>
+
+              {/* 
+
+
+  <Search
+          input={input}
+          setInput={setInput}
+          width="w-[300px]"
+        />
+*/}
+
+              <button className="text-white hover:text-red-200 transition-colors">
+                <User size={20} />
+              </button>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden text-white hover:text-red-200 transition-colors"
+              >
+                <Menu size={20} />
+              </button>
+            </AnimatePresence>
           </div>
         </div>
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className=" bg-white p-4 mt-2 rounded-xl shadow-lg border-2 border-red-500">
+            <ul className="space-y-3 ">
+              <li className="p-3 rounded-lg transition-all duration-200 hover:bg-red-200">
+                <Link href="/" legacyBehavior>
+                  <a
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setMobileTypesOpen(false);
+                    }}
+                    className="block text-gray-900"
+                  >
+                    Home
+                  </a>
+                </Link>
+              </li>
+              <li className="p-3 rounded-lg">
+                <button
+                  onClick={() => setMobileTypesOpen(!mobileTypesOpen)}
+                  className="flex items-center justify-between w-full text-left text-gray-900"
+                >
+                  Pokémon Types
+                  <ChevronDown
+                    size={16}
+                    className={`ml-1 transition-transform duration-200 ${
+                      mobileTypesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {/* Open Types menu */}
+                {mobileTypesOpen && (
+                  <ul>
+                    {types.map((type) => (
+                      <li key={type.name}>
+                        <Link href={`/${type.name}`} legacyBehavior>
+                          <a
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setMobileTypesOpen(false);
+                            }}
+                            className="block p-3 rounded-lg transition-all duration-200 hover:bg-red-200"
+                          >
+                            {type.name.charAt(0).toUpperCase() +
+                              type.name.slice(1)}
+                          </a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+              <li className="p-3 cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-200">
+                Services
+              </li>
+              <li className="p-3 cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-200">
+                Contact
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -4,13 +4,15 @@ import PokemonCard from "./components/PokemonCard";
 import LoadMoreButton from "./components/LoadMoreButton";
 import typeDescriptions from "../utils/typeDescriptions";
 import { motion } from "framer-motion";
+import Search from "./components/Search";
 
 export default function PokemonTypePage() {
   const router = useRouter();
   const { type } = router.query; // Get Pokémon type from URL
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(5); // statar med 5 pokemons
+  const [visible, setVisible] = useState(5); // Start with 5 Pokémon
+  const [input, setInput] = useState("");
 
   // Fetch Pokémon by type, limit to 20
   useEffect(() => {
@@ -45,6 +47,13 @@ export default function PokemonTypePage() {
     }
   }, [type]);
 
+  // Filter Pokémon based on search input
+  const filteredPokemonList = pokemonList.filter((pokemon) => {
+    const nameMatch = pokemon.name.toLowerCase().includes(input.toLowerCase());
+    const idMatch = pokemon.id.toString().includes(input);
+    return nameMatch || idMatch;
+  });
+
   if (loading) {
     return (
       <div className="flex flex-col justify-center items-center h-screen bg-red-500">
@@ -61,20 +70,53 @@ export default function PokemonTypePage() {
       </div>
     );
   }
-  // Show message if no Pokémons with this type exist
-  if (!pokemonList.length)
-    return <p className="text-center mt-5">No Pokémons found for this type</p>;
+  // Show if no Pokémons with this type exist
+  if (!filteredPokemonList.length)
+    return (
+      <div className="h-screen flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center space-y-6">
+          <img
+            src="https://media.tenor.com/lc0bFgqDj4gAAAAi/pikachu-triste.gif"
+            alt="No Pokémon found"
+            className="w-32"
+          />
+          {/* Error message */}
+          <p className=" text-xl font-semibold">
+            No Pokémon found for this type
+          </p>
+          <p className=" text-lg text-center">
+            Try searching for another Pokémon or browse through a different
+            type.
+          </p>
+          <div className="my-4">
+            <Search input={input} setInput={setInput} width="md:w-[600px]" />
+          </div>
+          <button
+            onClick={() => router.push("/")}
+            className="inline-flex items-center my-4 px-4 py-2 border-white border-2 text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Go Back to Home
+          </button>
+        </div>
+      </div>
+    );
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <h1 className="text-3xl font-bold text-center mt-8">
-        {/* Capitalize the first letter */}
-        {type.charAt(0).toUpperCase() + type.slice(1)} Pokémon
-      </h1>
-      <p className="text-center text-lg mt-2 px-6 max-w-2xl mx-auto">
-        {typeDescriptions[type] ||
-          "This is a unique Pokémon type with special abilities."}
-      </p>
+    <div className="h-screen flex flex-col">
+      <div className="flex flex-col items-center">
+        <h1 className="text-3xl font-bold text-center mt-8">
+          {type.charAt(0).toUpperCase() + type.slice(1)} Pokémon
+        </h1>
+        <p className="text-center text-lg mt-2 px-6 max-w-2xl mx-auto">
+          {typeDescriptions[type] ||
+            "This is a unique Pokémon type with special abilities."}
+        </p>
+
+        <div className="my-4">
+          <Search input={input} setInput={setInput} width="md:w-[600px]" />
+        </div>
+      </div>
+
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
@@ -82,7 +124,7 @@ export default function PokemonTypePage() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6"
         >
-          {pokemonList.slice(0, visible).map((pokemon) => (
+          {filteredPokemonList.slice(0, visible).map((pokemon) => (
             <motion.div
               key={pokemon.id}
               initial={{ opacity: 0, y: 20 }}
@@ -94,11 +136,12 @@ export default function PokemonTypePage() {
           ))}
         </motion.div>
       </div>
-      {/*Load More Button */}
+
+      {/* Load More Button */}
       <div className="text-center mb-5">
         <LoadMoreButton
           visible={visible}
-          total={pokemonList.length}
+          total={filteredPokemonList.length}
           onClick={() => setVisible(visible + 5)}
         />
       </div>
