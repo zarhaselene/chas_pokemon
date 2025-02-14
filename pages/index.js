@@ -5,7 +5,7 @@ import { SiPokemon } from "react-icons/si";
 import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import LoadMoreButton from "./components/LoadMoreButton";
-
+import Search from "./components/Search.js";
 /*
 - Mobil anpassa footer
 - Add a location for where you are in the header underline under the link
@@ -90,21 +90,7 @@ export default function Home() {
         <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl">
           Explore the world of Pokémon with our comprehensive Pokédex
         </p>
-        <motion.div
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="relative mt-3 md:w-[600px]"
-        >
-          <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-900 text-xl" />
-          <input
-            type="text"
-            placeholder={`Search by name or ID...`}
-            className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border border-transparent rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </motion.div>
+        <Search input={input} setInput={setInput} />
       </div>
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
