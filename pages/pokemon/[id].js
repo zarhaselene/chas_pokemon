@@ -158,7 +158,7 @@ export default function PokemonInfoPage() {
   if (!pokemon) return <h1 className="text-center mt-5">Pokémon not found</h1>;
 
   return (
-    <div className="bg-gray-100 px-4 py-4 w-full min-h-screen">
+    <div className="bg-gray-100 px-4 py-4 w-full min-h-screen  ">
       {/* BACK LINK*/}
       <div className="flex flex-row items-center mb-5">
         <Link
@@ -171,9 +171,9 @@ export default function PokemonInfoPage() {
       </div>{" "}
       <h1 className="text-4xl text-center mb-6">Pokémon details</h1>
       {/*POKEMON SECTION */}
-      <section className="bg-white rounded-lg p-4 shadow-lg overflow-hidden ">
+      <section className=" bg-white rounded-lg p-4 shadow-lg overflow-hidden ">
         {/*NAME, ID, FAVORIT BTN */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center ">
           <h2 className="text-3xl sm:text-5xl font-semibold">
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}{" "}
             <span className="text-slate-400">
@@ -188,16 +188,16 @@ export default function PokemonInfoPage() {
         </div>
         {/* Image of Pokemons, normal & Shiny */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5 p-5 m-4 ">
-          <div className="shadow-lg border-8 border-slate-200 rounded-md p-4">
+          <div className="shadow-lg border-8 border-gray-400 rounded-md ">
             <img
-              className="bg-white w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
+              className="bg-blue-300 w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
               src={pokemon.image}
               alt={pokemon.name}
             />
           </div>
-          <div className="shadow-lg border-8 border-slate-200 rounded-md p-4">
+          <div className="shadow-lg border-8 border-gray-400 rounded-md ">
             <img
-              className="bg-white w-[200px] h-[200px] md:w-[300px] md:h-[300px] "
+              className="bg-gradient-to-t from-[#22C1C3] to-[#FDBB2D]  w-[200px] h-[200px] md:w-[300px] md:h-[300px] "
               src={pokemon.shinyImage}
               alt={pokemon.name}
             />
@@ -278,15 +278,14 @@ export default function PokemonInfoPage() {
           </div>
 
           {/* Display weaknesses and strengths */}
-
-          <div className="flex gap-2 justify-around">
-            <div className="flex flex-col items-center">
+          <div className="flex gap-8 justify-center p-5 rounded-md">
+            <div className="flex flex-col  border-r-2 pr-8 ">
               <h2 className="text-xl font-semibold mb-4">Weaknesses:</h2>
               <ul className="grid grid-cols-2 gap-2">
                 {weaknesses.length ? (
                   weaknesses.map((weakness, index) => (
                     <li
-                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={`cursor-default text-white p-1 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[weakness.type]
                       } || "bg-gray-500`}
                       key={index}
@@ -299,13 +298,14 @@ export default function PokemonInfoPage() {
                 )}
               </ul>
             </div>
-            <div className="flex flex-col items-center">
+
+            <div className="flex flex-col">
               <h2 className="text-xl font-semibold mb-4">Resistances:</h2>
               <ul className="grid grid-cols-2 gap-2">
                 {strengths.length ? (
                   strengths.map((strength, index) => (
                     <li
-                      className={`cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={`cursor-default text-white p-1 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[strength.type]
                       } || "bg-gray-500`}
                       key={index}

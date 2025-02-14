@@ -23,6 +23,28 @@ import {
   Moon,
   Sparkles,
 } from "lucide-react";
+
+const typeColors = {
+  grass: "bg-green-600",
+  fire: "bg-red-600",
+  water: "bg-blue-600",
+  electric: "bg-yellow-500",
+  psychic: "bg-purple-600",
+  ice: "bg-cyan-500",
+  fighting: "bg-orange-600",
+  poison: "bg-purple-700",
+  ground: "bg-yellow-700",
+  flying: "bg-indigo-500",
+  bug: "bg-lime-600",
+  rock: "bg-gray-600",
+  ghost: "bg-violet-600",
+  dragon: "bg-indigo-700",
+  dark: "bg-gray-700",
+  steel: "bg-gray-400",
+  fairy: "bg-pink-500",
+  normal: "bg-gray-500",
+};
+
 import { RxCrossCircled } from "react-icons/rx";
 import { FaSearch } from "react-icons/fa";
 import Search from "./Search.js";
@@ -321,21 +343,78 @@ const Header = () => {
                 />
 
                 {searchOpen ? (
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <input
+                      placeHolder="Search by name or ID"
                       onChange={(e) => setInput(e.target.value)}
                       value={input}
                       type="text"
                       className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border-red-700 border-2 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
                     />
-                    <div className="absolute bg-white text-black w-56 rounded-xl flex h-56 p-2">
+                    <div className="absolute bg-white text-black w-56 rounded-xl flex p-[2px] h-[312px] overflow-y-auto justify-center">
                       <ul className="flex flex-col justify-start items-start">
-                        {filteredPokemons.slice(0, 10).map((pokemon) => {
-                          return <li> {pokemon.name} </li>;
+                        {filteredPokemons.slice(0, 20).map((pokemon, index) => {
+                          return (
+                            <li
+                              key={index}
+                              className="flex gap-2 justify-start items-center border-2 rounded-xl w-full p-2 mb-2"
+                            >
+                              <div className="flex flex-col justify-start items-start">
+                                <span className="font-bold">
+                                  {" "}
+                                  {pokemon.name}
+                                </span>
+                                <span className="text-gray-400 font-semibold font-mono">
+                                  {" "}
+                                  {pokemon.id < 10
+                                    ? `#00${pokemon.id}`
+                                    : pokemon.id < 100
+                                    ? `#0${pokemon.id}`
+                                    : `#${pokemon.id}`}{" "}
+                                </span>
+                                <span className="flex gap-2 text-white">
+                                  {" "}
+                                  {pokemon.types.map((type) => {
+                                    return (
+                                      <span
+                                        className={`text-xs font-bold p-[4px] rounded-lg font-mono ${
+                                          typeColors[type] || "bg-gray-500"
+                                        }`}
+                                      >
+                                        {type}
+                                      </span>
+                                    );
+                                  })}{" "}
+                                </span>
+                              </div>
+                              <span>
+                                <Link
+                                  className="flex flex-col items-center"
+                                  href={`/pokemon/${pokemon.id}`}
+                                  onClick={() => {
+                                    setSearchOpen(false);
+                                    setInput("");
+                                  }}
+                                >
+                                  <img
+                                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                                    alt={pokemon.name}
+                                    width={75}
+                                    height={75}
+                                  />{" "}
+                                </Link>
+                              </span>
+                            </li>
+                          );
                         })}
                       </ul>
                     </div>
-                  </div>
+                  </motion.div>
                 ) : (
                   ""
                 )}
