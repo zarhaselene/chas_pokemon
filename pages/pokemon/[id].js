@@ -286,7 +286,7 @@ export default function PokemonInfoPage() {
                 {weaknesses.length ? (
                   weaknesses.map((weakness, index) => (
                     <li
-                      className={`cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[weakness.type]
                       } || "bg-gray-500`}
                       key={index}
