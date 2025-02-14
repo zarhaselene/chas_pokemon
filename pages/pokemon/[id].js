@@ -282,11 +282,11 @@ export default function PokemonInfoPage() {
           <div className="flex gap-2 justify-around">
             <div className="flex flex-col items-center">
               <h2 className="text-xl font-semibold mb-4">Weaknesses:</h2>
-              <ul>
+              <ul className="grid grid-cols-2 gap-2">
                 {weaknesses.length ? (
                   weaknesses.map((weakness, index) => (
                     <li
-                      className={` cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={`cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[weakness.type]
                       } || "bg-gray-500`}
                       key={index}
@@ -301,7 +301,7 @@ export default function PokemonInfoPage() {
             </div>
             <div className="flex flex-col items-center">
               <h2 className="text-xl font-semibold mb-4">Resistances:</h2>
-              <ul>
+              <ul className="grid grid-cols-2 gap-2">
                 {strengths.length ? (
                   strengths.map((strength, index) => (
                     <li

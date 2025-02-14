@@ -38,15 +38,14 @@ const Header = () => {
   const [mobileTypesOpen, setMobileTypesOpen] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [input, setInput] = useState("");
 
   const { searchInput, setSearchInput, searchResults, pokemons, loading } =
     usePokemon();
 
   const filteredPokemons = pokemons.filter((pokemon) => {
-    const nameMatch = pokemon.name
-      .toLowerCase()
-      .includes(searchInput.toLowerCase());
-    const idMatch = pokemon.id.toString().includes(searchInput);
+    const nameMatch = pokemon.name.toLowerCase().includes(input.toLowerCase());
+    const idMatch = pokemon.id.toString().includes(input);
     return nameMatch || idMatch;
   });
 
@@ -324,11 +323,17 @@ const Header = () => {
                 {searchOpen ? (
                   <div>
                     <input
+                      onChange={(e) => setInput(e.target.value)}
+                      value={input}
                       type="text"
                       className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border-red-700 border-2 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
                     />
-                    <div className="absolute bg-white text-black w-56 rounded-xl flex h-56">
-                      Bulbasaur
+                    <div className="absolute bg-white text-black w-56 rounded-xl flex h-56 p-2">
+                      <ul className="flex flex-col justify-start items-start">
+                        {filteredPokemons.slice(0, 10).map((pokemon) => {
+                          return <li> {pokemon.name} </li>;
+                        })}
+                      </ul>
                     </div>
                   </div>
                 ) : (
