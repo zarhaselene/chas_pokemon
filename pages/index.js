@@ -10,7 +10,7 @@ import Search from "./components/Search.js";
 - Mobil anpassa footer
 - Add a location for where you are in the header underline under the link
 - Finish [id].js
-- Make a Search component
+-̶ M̶a̶k̶e̶ a̶ S̶e̶a̶r̶c̶h̶ c̶o̶m̶p̶o̶n̶e̶n̶t̶
 - Use Card and Search component in Bookmarks.js
 - Make a working hamburger icon that displays a menu
 - Maybe add a search bar that let's you find pokemon
