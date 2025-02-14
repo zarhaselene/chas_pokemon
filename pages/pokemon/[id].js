@@ -151,9 +151,6 @@ export default function PokemonInfoPage() {
 
   const { weaknesses, strengths } = getTypeAdvantages(pokemon.types);
 
-  console.log("pokemonObject", pokemon);
-  console.log("weaknesses", weaknesses);
-
   // Loading text
   if (loading) return <p className="text-center mt-5">Loading Pokémons...</p>;
 
@@ -161,8 +158,8 @@ export default function PokemonInfoPage() {
   if (!pokemon) return <h1 className="text-center mt-5">Pokémon not found</h1>;
 
   return (
-    <div className="bg-gray-100 px-4 py-4 w-full min-h-screen  ">
-      {/* Back Link*/}
+    <div className="bg-gray-100 px-4 py-4 w-full min-h-screen">
+      {/* BACK LINK*/}
       <div className="flex flex-row items-center mb-5">
         <Link
           href="/"
@@ -173,9 +170,9 @@ export default function PokemonInfoPage() {
         </Link>
       </div>{" "}
       <h1 className="text-4xl text-center mb-6">Pokémon details</h1>
-      {/*Pokenmon "Card" */}
+      {/*POKEMON SECTION */}
       <section className="bg-white rounded-lg p-4 shadow-lg overflow-hidden ">
-        {/*Name, ID, Favorite btn */}
+        {/*NAME, ID, FAVORIT BTN */}
         <div className="flex justify-between items-center">
           <h2 className="text-3xl sm:text-5xl font-semibold">
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}{" "}
@@ -206,7 +203,8 @@ export default function PokemonInfoPage() {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-5">
+        {/* Display TYPES */}
+        <div className="flex flex-col gap-5 ">
           <h2 className="font-bold text-xl">Types:</h2>
           <div className="flex space-x-2">
             <ul className="flex gap-2">
@@ -223,6 +221,7 @@ export default function PokemonInfoPage() {
             </ul>
           </div>
 
+          {/* Display WEIGHT & HEIGHT*/}
           <div className="flex justify-center items-center gap-10 font-sans">
             <div className="flex items-center flex-col bg-gray-100 px-8 sm:px-14 py-3 rounded-lg">
               <p className="text-sm text-gray-600">Weight</p>
@@ -235,9 +234,9 @@ export default function PokemonInfoPage() {
               </p>
             </div>
           </div>
+          {/* Display BASE STATS */}
           <div>
             <h1 className="font-bold text-xl mb-2 mt-5">Base stats:</h1>
-
             {pokemon.stats?.map((statsObj) => (
               <div>
                 <div className="flex flex-row justify-between w-full">
@@ -263,6 +262,7 @@ export default function PokemonInfoPage() {
             ))}
           </div>
 
+          {/* Display ABILITIES */}
           <div>
             <h2 className="text-xl font-semibold mb-4">Abilities:</h2>
             <div className="flex flex-wrap gap-2">
@@ -286,7 +286,7 @@ export default function PokemonInfoPage() {
                 {weaknesses.length ? (
                   weaknesses.map((weakness, index) => (
                     <li
-                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={` cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[weakness.type]
                       } || "bg-gray-500`}
                       key={index}
@@ -305,13 +305,12 @@ export default function PokemonInfoPage() {
                 {strengths.length ? (
                   strengths.map((strength, index) => (
                     <li
-                      className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
+                      className={`cursor-default text-white p-2 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                         typeColors[strength.type]
                       } || "bg-gray-500`}
                       key={index}
                     >
-                      {strength.type.charAt(0).toUpperCase() +
-                        strength.type.slice(1)}
+                      {strength.type}
                     </li>
                   ))
                 ) : (
