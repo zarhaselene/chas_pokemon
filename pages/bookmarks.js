@@ -1,34 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useFavorites } from "./context/FavoritesContext";
 import Link from "next/link";
-
-const typeColors = {
-  grass: { text: "text-white", bg: "bg-green-700" },
-  fire: { text: "text-white", bg: "bg-red-700" },
-  water: { text: "text-white", bg: "bg-blue-700" },
-  electric: { text: "text-white", bg: "bg-yellow-600" },
-  psychic: { text: "text-white", bg: "bg-purple-700" },
-  ice: { text: "text-white", bg: "bg-cyan-600" },
-  fighting: { text: "text-white", bg: "bg-orange-700" },
-  poison: { text: "text-white", bg: "bg-purple-600" },
-  ground: { text: "text-white", bg: "bg-yellow-600" },
-  flying: { text: "text-white", bg: "bg-indigo-600" },
-  bug: { text: "text-white", bg: "bg-lime-600" },
-  rock: { text: "text-white", bg: "bg-gray-600" },
-  ghost: { text: "text-white", bg: "bg-violet-700" },
-  dragon: { text: "text-white", bg: "bg-indigo-800" },
-  dark: { text: "text-white", bg: "bg-gray-800" },
-  steel: { text: "text-white", bg: "bg-gray-500" },
-  fairy: { text: "text-white", bg: "bg-pink-600" },
-  normal: { text: "text-white", bg: "bg-gray-500" },
-};
+import PokemonCard from "./components/PokemonCard";
+import Hero from "./components/Hero";
+import Search from "./components/Search.js";
 
 const BookmarksPage = () => {
+  // Hämtar favorites (bokmärkta Pokémon) och toggleFavorite-funktion från context
   const { favorites, toggleFavorite } = useFavorites();
+  // Lokala state-variabler för att hantera detaljerad data om favorit-Pokémon och filtrerade favoriter
   const [detailedFavorites, setDetailedFavorites] = useState([]);
   const [selectedSearch, setSelectedSearch] = useState("");
   const [filteredFavorites, setFilteredFavorites] = useState([]);
+  const [input, setInput] = useState("");
 
+  // useEffect för att hämta detaljerad information om varje favorit-Pokémon vid första renderingen eller när favorites ändras
   useEffect(() => {
     async function fetchDetailedFavorites() {
       const detailedData = await Promise.all(
@@ -37,26 +23,27 @@ const BookmarksPage = () => {
             `https://pokeapi.co/api/v2/pokemon/${pokemon.id}`
           );
           const data = await response.json();
+          // Returnerar en ny Pokémon-objekt med detaljerad typdata
           return {
             ...pokemon,
             types: data.types.map((t) => t.type.name),
           };
         })
       );
+      // Uppdaterar state med den detaljerade informationen
       setDetailedFavorites(detailedData);
       setFilteredFavorites(detailedData);
     }
     fetchDetailedFavorites();
   }, [favorites]);
 
-  // Hanterar sökningen
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSelectedSearch(query);
-
+  // Hantera sökningen
+  const handleSearch = (query) => {
+    setInput(query);
+    // Filtrerar favoriter baserat på om namnet eller id:t matchar sökfrågan
     const filtered = detailedFavorites.filter((pokemon) => {
       return (
-        pokemon.name.toLowerCase().includes(query) ||
+        pokemon.name.toLowerCase().includes(query.toLowerCase()) ||
         pokemon.id.toString().includes(query)
       );
     });
@@ -65,88 +52,32 @@ const BookmarksPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen">
-      <div className="text-center mb-8 flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Bokmärkta:</h1>
-        <img
-          src="/pokemon logo.png"
-          alt="Pokémon"
-          className="w-48 h-auto ml-4"
-        />
-      </div>
-
-      {/* Sökfält för namn eller ID */}
-      <div className="mb-4 flex justify-center">
-        <input
-          type="text"
-          value={selectedSearch}
-          onChange={handleSearch}
-          placeholder="Search by name or ID..."
-          className="p-2 border rounded-lg w-80"
-        />
-      </div>
-
-      {/* Om det finns bokmärkta Pokémon */}
-      {filteredFavorites.length > 0 ? (
-        <div className="flex flex-wrap justify-center">
-          {filteredFavorites.map((pokemon, index) => (
-            <Link
-              key={index}
-              href={`/pokemon/${pokemon.id}`}
-              className="w-64 m-4 text-center bg-white p-4 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 relative"
-            >
-              {/* Hjärt-knappen längst upp till höger */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  toggleFavorite(pokemon);
-                }}
-                className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-2xl transform transition-transform duration-300 hover:scale-125"
-                aria-label={`Remove ${pokemon.name} from favorites`}
-              >
-                ❤️
-              </button>
-
-              <div className="mb-4">
-                {/* Pokémon bild */}
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                  alt={pokemon.name}
-                  className="w-32 h-32 object-contain mx-auto"
-                />
+    <div className="min-h-screen flex flex-col ">
+      {/* Hero components*/}
+      <Hero
+        title="Your Favorite Pokémons"
+        subtitle="Here are all the Pokémons you've bookmarked. Explore and manage your collection!"
+        image="https://media.tenor.com/7guvvXVPhG0AAAAi/pikachu-pokemon.gif"
+      >
+        <Search input={input} setInput={handleSearch} width="md:w-[600px]" />
+      </Hero>
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Om det finns bokmärkta Pokémon */}
+        {filteredFavorites.length > 0 ? (
+          <div className="flex flex-wrap justify-center lg:justify-start gap-4 pb-4">
+            {filteredFavorites.map((pokemon) => (
+              // Använd PokemonCard för att rendera varje Pokémon
+              <div key={pokemon.id} className="flex-shrink-0">
+                <PokemonCard pokemon={pokemon} />
               </div>
-
-              {/* Pokémon namn och ID */}
-              <h3 className="text-2xl font-semibold">{pokemon.name}</h3>
-              <p className="text-gray-600 text-sm">
-                {" "}
-                #{pokemon.id.toString().padStart(3, "0")}
-              </p>
-
-              {/* Pokémon typer */}
-              <div className="mt-2">
-                {pokemon.types && pokemon.types.length > 0
-                  ? pokemon.types.map((type, index) => (
-                      <span
-                        key={index}
-                        className={`${typeColors[type]?.text || "text-white"} ${
-                          typeColors[type]?.bg || "bg-gray-500"
-                        } px-3 py-1 rounded-full mr-2 mb-2`}
-                      >
-                        {type}
-                      </span>
-                    ))
-                  : "Unknown"}
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-lg text-gray-500">
-          Inga bokmärkta Pokémon.
-        </p>
-      )}
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-lg text-gray-500">
+            Inga bokmärkta Pokémon.
+          </p>
+        )}
+      </div>
     </div>
   );
 };

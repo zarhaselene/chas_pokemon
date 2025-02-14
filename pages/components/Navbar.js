@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import {
   Heart,
   User,
@@ -26,6 +26,7 @@ import {
 import { RxCrossCircled } from "react-icons/rx";
 import { FaSearch } from "react-icons/fa";
 import Search from "./Search.js";
+import { usePokemon } from "../context/PokemonContext.js";
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -37,6 +38,17 @@ const Header = () => {
   const [mobileTypesOpen, setMobileTypesOpen] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const { searchInput, setSearchInput, searchResults, pokemons, loading } =
+    usePokemon();
+
+  const filteredPokemons = pokemons.filter((pokemon) => {
+    const nameMatch = pokemon.name
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+    const idMatch = pokemon.id.toString().includes(searchInput);
+    return nameMatch || idMatch;
+  });
 
   useEffect(() => {
     const handleResize = () => {
@@ -315,6 +327,9 @@ const Header = () => {
                       type="text"
                       className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border-red-700 border-2 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
                     />
+                    <div className="absolute bg-white text-black w-56 rounded-xl flex h-56">
+                      Bulbasaur
+                    </div>
                   </div>
                 ) : (
                   ""
