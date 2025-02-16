@@ -1,36 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useFavorites } from "./context/FavoritesContext";
 import Link from "next/link";
-
-const typeColors = {
-  grass: { text: "text-white", bg: "bg-green-700" },
-  fire: { text: "text-white", bg: "bg-red-700" },
-  water: { text: "text-white", bg: "bg-blue-700" },
-  electric: { text: "text-white", bg: "bg-yellow-600" },
-  psychic: { text: "text-white", bg: "bg-purple-700" },
-  ice: { text: "text-white", bg: "bg-cyan-600" },
-  fighting: { text: "text-white", bg: "bg-orange-700" },
-  poison: { text: "text-white", bg: "bg-purple-600" },
-  ground: { text: "text-white", bg: "bg-yellow-600" },
-  flying: { text: "text-white", bg: "bg-indigo-600" },
-  bug: { text: "text-white", bg: "bg-lime-600" },
-  rock: { text: "text-white", bg: "bg-gray-600" },
-  ghost: { text: "text-white", bg: "bg-violet-700" },
-  dragon: { text: "text-white", bg: "bg-indigo-800" },
-  dark: { text: "text-white", bg: "bg-gray-800" },
-  steel: { text: "text-white", bg: "bg-gray-500" },
-  fairy: { text: "text-white", bg: "bg-pink-600" },
-  normal: { text: "text-white", bg: "bg-gray-500" },
-};
+import Search from "./components/Search.js";
+import PokemonCard from "./components/PokemonCard";
 
 const BookmarksPage = () => {
+  // Använder användarens favoritpokémon från context
   const { favorites, toggleFavorite } = useFavorites();
+  // State för detaljerad information om favoriter
   const [detailedFavorites, setDetailedFavorites] = useState([]);
+  // State för den valda sökfrågan
   const [selectedSearch, setSelectedSearch] = useState("");
+  // State för filtrerade favoriter baserat på sökfrågan
   const [filteredFavorites, setFilteredFavorites] = useState([]);
-
+// useEffect-hook som hämtar detaljerad information om favoriter från API:t när 'favorites' ändras
   useEffect(() => {
     async function fetchDetailedFavorites() {
+      // Hämta detaljerad information om varje Pokémon genom att använda deras ID
       const detailedData = await Promise.all(
         favorites.map(async (pokemon) => {
           const response = await fetch(
@@ -43,20 +29,19 @@ const BookmarksPage = () => {
           };
         })
       );
-      setDetailedFavorites(detailedData);
-      setFilteredFavorites(detailedData);
+      setDetailedFavorites(detailedData); // Uppdatera state med detaljerad information
+      setFilteredFavorites(detailedData); // Initialt sätt alla favoriter som filtrerade
     }
     fetchDetailedFavorites();
   }, [favorites]);
 
-  // Hanterar sökningen
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
+  // Hantera sökningen
+  const handleSearch = (query) => {
     setSelectedSearch(query);
-
+    // Filtrera de detaljerade favoriterna baserat på sökfrågan
     const filtered = detailedFavorites.filter((pokemon) => {
       return (
-        pokemon.name.toLowerCase().includes(query) ||
+        pokemon.name.toLowerCase().includes(query.toLowerCase()) ||
         pokemon.id.toString().includes(query)
       );
     });
@@ -75,72 +60,24 @@ const BookmarksPage = () => {
         />
       </div>
 
-      {/* Sökfält för namn eller ID */}
-      <div className="mb-4 flex justify-center">
-        <input
-          type="text"
-          value={selectedSearch}
-          onChange={handleSearch}
-          placeholder="Search by name or ID..."
-          className="p-2 border rounded-lg w-80"
-        />
+      {/* Sökfältet */}
+      <div className="mb-4 flex justify-center w-full">
+        <div className="flex justify-center w-full max-w-lg">
+          <Search input={selectedSearch} setInput={handleSearch} />
+        </div>
       </div>
 
       {/* Om det finns bokmärkta Pokémon */}
       {filteredFavorites.length > 0 ? (
-        <div className="flex flex-wrap justify-center">
-          {filteredFavorites.map((pokemon, index) => (
-            <Link
-              key={index}
-              href={`/pokemon/${pokemon.id}`}
-              className="w-64 m-4 text-center bg-white p-4 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 relative"
-            >
-              {/* Hjärt-knappen längst upp till höger */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  toggleFavorite(pokemon);
-                }}
-                className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-2xl transform transition-transform duration-300 hover:scale-125"
-                aria-label={`Remove ${pokemon.name} from favorites`}
-              >
-                ❤️
-              </button>
-
-              <div className="mb-4">
-                {/* Pokémon bild */}
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                  alt={pokemon.name}
-                  className="w-32 h-32 object-contain mx-auto"
-                />
+        <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
+          <div className="flex flex-wrap justify-start gap-4 pb-4">
+            {filteredFavorites.map((pokemon) => (
+              // Använd PokemonCard för att rendera varje Pokémon
+              <div key={pokemon.id} className="flex-shrink-0">
+                <PokemonCard pokemon={pokemon} />
               </div>
-
-              {/* Pokémon namn och ID */}
-              <h3 className="text-2xl font-semibold">{pokemon.name}</h3>
-              <p className="text-gray-600 text-sm">
-                {" "}
-                #{pokemon.id.toString().padStart(3, "0")}
-              </p>
-
-              {/* Pokémon typer */}
-              <div className="mt-2">
-                {pokemon.types && pokemon.types.length > 0
-                  ? pokemon.types.map((type, index) => (
-                      <span
-                        key={index}
-                        className={`${typeColors[type]?.text || "text-white"} ${
-                          typeColors[type]?.bg || "bg-gray-500"
-                        } px-3 py-1 rounded-full mr-2 mb-2`}
-                      >
-                        {type}
-                      </span>
-                    ))
-                  : "Unknown"}
-              </div>
-            </Link>
-          ))}
+            ))}
+          </div>
         </div>
       ) : (
         <p className="text-center text-lg text-gray-500">
