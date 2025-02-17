@@ -1,6 +1,6 @@
-import { SiPokemon } from "react-icons/si";
-
-const Hero = ({ title, subtitle, image, children }) => {
+import {SiPokemon} from "react-icons/si";
+// Hero component for the landing page and bookmark page
+const Hero = ({title, subtitle, image, children}) => {
   return (
     <>
       <div className="flex flex-col text-white text-center mb-4 bg-red-500 pb-12 items-center gap-2">

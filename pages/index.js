@@ -75,6 +75,7 @@ export default function Home() {
         />
       </Hero>
 
+      {/* Pokémon cards */}
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{opacity: 0}}
@@ -94,7 +95,7 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
-
+      {/*  Load more button*/}
       <div className="text-center mb-5">
         <LoadMoreButton
           visible={visible}
@@ -102,7 +103,7 @@ export default function Home() {
           onClick={() => setVisible(visible + 5)}
         />
       </div>
-
+      {/*  video of the pokemon theme song */}
       <div className="bg-gray-50">
         <div className="flex flex-col justify-center items-center m-10">
           <h3 className="text-xl text-center font-semibold">

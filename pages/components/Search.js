@@ -1,6 +1,6 @@
-import { FaSearch } from "react-icons/fa";
-
-export default function Search({ input, setInput, width }) {
+import {FaSearch} from "react-icons/fa";
+// component for the search input field
+export default function Search({input, setInput, width}) {
   return (
     <div className={`relative mt-3 w-full ${width}`}>
       <FaSearch className="ml-1 absolute left-2 top-1/2 transform -translate-y-1/2 text-red-700 text-xl" />

@@ -4,6 +4,7 @@ import Link from "next/link";
 import FavoriteBtn from "../components/FavoriteBtn";
 import {FaArrowLeftLong, FaArrowRightLong} from "react-icons/fa6";
 
+// Type elements for each type of pokemon and their weaknesses and strengths
 const typeChart = {
   normal: {weak: ["fighting"], strong: []},
   fire: {
@@ -52,6 +53,7 @@ const typeChart = {
   fairy: {weak: ["steel", "poison"], strong: ["dragon", "dark", "fighting"]},
 };
 
+// Colors for each type
 const typeColors = {
   grass: "bg-green-600",
   fire: "bg-red-600",
@@ -107,12 +109,15 @@ export default function PokemonInfoPage() {
     }
   }, [id]);
 
+  // Get type advantages
   const getTypeAdvantages = (types = []) => {
     const weaknesses = [];
     const strengths = [];
 
+    // Get all types of the pokemon
     const pokemonTypes = types.map((typesObj) => typesObj?.type?.name);
 
+    // loop through each type and get the weaknesses and strengths
     types.forEach((typesObj) => {
       const type = typesObj?.type?.name;
       const typeInfo = typeChart[type];
@@ -136,7 +141,7 @@ export default function PokemonInfoPage() {
       (item, index, self) =>
         index === self.findIndex((t) => t.type === item.type)
     );
-
+    // filter out duplicate strengths so they only appear once
     const finalStrengths = strengths.filter(
       (item, index, self) =>
         index === self.findIndex((t) => t.type === item.type)
@@ -156,6 +161,7 @@ export default function PokemonInfoPage() {
   // If names dont match
   if (!pokemon) return <h1 className="text-center mt-5">Pokémon not found</h1>;
 
+  // Next and Previous pokemon buttons functions
   function handleNext() {
     const nextId = id >= 1000 ? 1 : parseInt(id) + 1;
     return router.push(`/pokemon/${nextId}`);
@@ -166,6 +172,7 @@ export default function PokemonInfoPage() {
     return router.push(`/pokemon/${prevId}`);
   }
 
+  //** Display  of the pokemon details**//
   return (
     <div className="bg-gray-100 px-4 py-4 w-full min-h-screen ">
       {/* BACK LINK*/}
@@ -270,38 +277,37 @@ export default function PokemonInfoPage() {
               </div>
             </div>
             {/* Display BASE STATS */}
-            <div className="">
-              <h1 className="font-bold text-xl text-left mb-2 mt-5">
-                Base stats:
-              </h1>
-              {pokemon.stats?.map((statsObj) => (
-                <div className="">
-                  <div className="flex flex-row justify-between w-full ">
-                    <p className="font-sans text-sm font-semibold capitalize ml-2">
-                      {statsObj.stat.name}
-                    </p>
-                    <p className="font-sans text-sm font-semibold">
-                      {statsObj.base_stat}
-                    </p>
-                  </div>
 
-                  <div className="relative w-full h-4 mb-2  rounded-full overflow-hidden bg-gray-200">
-                    <div
-                      className={`h-full ${
-                        statsObj.base_stat < 10
-                          ? "bg-red-500 rounded-full"
-                          : statsObj.base_stat < 30
-                          ? "bg-yellow-500 rounded-full"
-                          : statsObj.base_stat < 60
-                          ? "bg-orange-500 rounded-full"
-                          : "bg-green-500 rounded-full"
-                      }`}
-                      style={{width: `${Math.min(statsObj.base_stat, 100)}%`}}
-                    ></div>
-                  </div>
+            <h1 className="font-bold text-xl text-left mb-2 mt-5">
+              Base stats:
+            </h1>
+            {pokemon.stats?.map((statsObj) => (
+              <div className="">
+                <div className="flex flex-row justify-between w-full ">
+                  <p className="font-sans text-sm font-semibold capitalize ml-2">
+                    {statsObj.stat.name}
+                  </p>
+                  <p className="font-sans text-md font-semibold">
+                    {statsObj.base_stat}
+                  </p>
                 </div>
-              ))}
-            </div>
+                {/* Progress bar for stats*/}
+                <div className="relative w-full h-4 mb-2  rounded-full overflow-hidden bg-gray-200">
+                  <div
+                    className={`h-full ${
+                      statsObj.base_stat < 20
+                        ? "bg-red-500 rounded-full"
+                        : statsObj.base_stat < 40
+                        ? "bg-yellow-500 rounded-full"
+                        : statsObj.base_stat < 60
+                        ? "bg-orange-500 rounded-full"
+                        : "bg-green-500 rounded-full"
+                    }`}
+                    style={{width: `${Math.min(statsObj.base_stat, 100)}%`}}
+                  ></div>
+                </div>
+              </div>
+            ))}
 
             {/* Display ABILITIES */}
             <div>

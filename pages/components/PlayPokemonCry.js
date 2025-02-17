@@ -1,10 +1,10 @@
-import { useRef } from "react";
-import { AiFillSound } from "react-icons/ai";
-import { FaVolumeUp } from "react-icons/fa";
+import {useRef} from "react";
+import {AiFillSound} from "react-icons/ai";
+import {FaVolumeUp} from "react-icons/fa";
 
-// Fix
+// Audio player for the pokemon cry
 
-const PlayPokemonCry = ({ name }) => {
+const PlayPokemonCry = ({name}) => {
   const audioRef = useRef(null);
 
   {

@@ -1,8 +1,11 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {createContext, useContext, useState, useEffect} from "react";
 
+// Context for the Pokemon data and search functionality
+// The context provides the search input, search results, Pokemon data, loading state, and filtered Pokemon
+// The context also stores the Pokemon data in localStorage
 const PokemonContext = createContext();
 
-export function PokemonProvider({ children }) {
+export function PokemonProvider({children}) {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -27,7 +30,7 @@ export function PokemonProvider({ children }) {
       try {
         const response = await fetch(
           "https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0",
-          { signal: controller.signal }
+          {signal: controller.signal}
         );
 
         if (!response.ok) throw new Error("Failed to fetch Pokémon data");

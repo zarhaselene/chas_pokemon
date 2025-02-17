@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import {Facebook, Twitter, Instagram, Mail} from "lucide-react";
 
 const Footer = () => {
   return (

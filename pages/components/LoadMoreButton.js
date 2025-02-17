@@ -1,6 +1,6 @@
 import React from "react";
-
-const LoadMoreButton = ({ visible, total, onClick }) => {
+//  Component for the load more button
+const LoadMoreButton = ({visible, total, onClick}) => {
   if (visible >= total) return null;
   return (
     <button
