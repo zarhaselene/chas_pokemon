@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useContext } from "react";
+import {React, useState, useEffect, useContext} from "react";
 import {
   Heart,
   User,
@@ -45,13 +45,13 @@ const typeColors = {
   normal: "bg-gray-500",
 };
 
-import { RxCrossCircled } from "react-icons/rx";
-import { FaSearch } from "react-icons/fa";
+import {RxCrossCircled} from "react-icons/rx";
+import {FaSearch} from "react-icons/fa";
 import Search from "./Search.js";
-import { usePokemon } from "../context/PokemonContext.js";
+import {usePokemon} from "../context/PokemonContext.js";
 
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import {motion, AnimatePresence} from "framer-motion";
 
 const Header = () => {
   const [types, setTypes] = useState([]);
@@ -62,7 +62,7 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [input, setInput] = useState("");
 
-  const { searchInput, setSearchInput, searchResults, pokemons, loading } =
+  const {searchInput, setSearchInput, searchResults, pokemons, loading} =
     usePokemon();
 
   const filteredPokemons = pokemons.filter((pokemon) => {
@@ -145,7 +145,7 @@ const Header = () => {
           <AnimatePresence>
             <motion.div
               className="flex items-center"
-              whileHover={{ y: [0, -9, 0] }}
+              whileHover={{y: [0, -9, 0]}}
               transition={{
                 duration: 0.9,
                 ease: "easeIn",
@@ -203,10 +203,10 @@ const Header = () => {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{opacity: 0, y: -10}}
+                      animate={{opacity: 1, y: 0}}
+                      exit={{opacity: 0, y: -10}}
+                      transition={{duration: 0.2}}
                       onMouseEnter={() => setIsOpen(true)}
                       onMouseLeave={() => setIsOpen(false)}
                       className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-lg z-10 overflow-hidden border-2 border-red-500"
@@ -293,15 +293,15 @@ const Header = () => {
                   className="inline-block p-2 cursor-pointer"
                   whileHover={{
                     scale: 1.1,
-                    transition: { type: "spring", stiffness: 300, damping: 20 },
+                    transition: {type: "spring", stiffness: 300, damping: 20},
                   }}
                   whileTap={{
                     scale: 0.95,
-                    transition: { type: "spring", stiffness: 500, damping: 25 },
+                    transition: {type: "spring", stiffness: 500, damping: 25},
                   }}
                 >
                   <motion.div
-                    initial={{ scale: 1, y: 0 }}
+                    initial={{scale: 1, y: 0}}
                     transition={{
                       type: "spring",
                       stiffness: 250,
@@ -344,10 +344,10 @@ const Header = () => {
 
                 {searchOpen ? (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -10}}
+                    transition={{duration: 0.5}}
                   >
                     <input
                       placeHolder="Search by name or ID"
@@ -356,8 +356,8 @@ const Header = () => {
                       type="text"
                       className="block max-w-3xl w-full pl-10 pr-3 text-black py-3 border-red-700 border-2 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
                     />
-                    <div className="absolute bg-white text-black w-56 rounded-xl flex p-[2px] h-[312px] overflow-y-auto justify-center">
-                      <ul className="flex flex-col justify-start items-start">
+                    <div className="absolute bg-white text-black w-56 rounded-xl flex p-[2px] h-[312px] overflow-y-auto justify-center z-10">
+                      <ul className="flex flex-col justify-start items-start z-10 ">
                         {filteredPokemons.slice(0, 20).map((pokemon, index) => {
                           return (
                             <li

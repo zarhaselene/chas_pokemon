@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useFavorites } from "./context/FavoritesContext";
+import React, {useEffect, useState} from "react";
+import {useFavorites} from "./context/FavoritesContext";
 import Link from "next/link";
 import Search from "./components/Search.js";
 import PokemonCard from "./components/PokemonCard";
+import Hero from "./components/Hero";
 
 const BookmarksPage = () => {
   // Använder användarens favoritpokémon från context
-  const { favorites, toggleFavorite } = useFavorites();
+  const {favorites, toggleFavorite} = useFavorites();
   // State för detaljerad information om favoriter
   const [detailedFavorites, setDetailedFavorites] = useState([]);
   // State för den valda sökfrågan
-  const [selectedSearch, setSelectedSearch] = useState("");
+  const [input, setInput] = useState("");
   // State för filtrerade favoriter baserat på sökfrågan
   const [filteredFavorites, setFilteredFavorites] = useState([]);
-// useEffect-hook som hämtar detaljerad information om favoriter från API:t när 'favorites' ändras
+  // useEffect-hook som hämtar detaljerad information om favoriter från API:t när 'favorites' ändras
   useEffect(() => {
     async function fetchDetailedFavorites() {
       // Hämta detaljerad information om varje Pokémon genom att använda deras ID
@@ -37,8 +38,8 @@ const BookmarksPage = () => {
 
   // Hantera sökningen
   const handleSearch = (query) => {
-    setSelectedSearch(query);
-    // Filtrera de detaljerade favoriterna baserat på sökfrågan
+    setInput(query);
+    // Filtrerar favoriter baserat på om namnet eller id:t matchar sökfrågan
     const filtered = detailedFavorites.filter((pokemon) => {
       return (
         pokemon.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -50,27 +51,19 @@ const BookmarksPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen">
-      <div className="text-center mb-8 flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Bokmärkta:</h1>
-        <img
-          src="/pokemon logo.png"
-          alt="Pokémon"
-          className="w-48 h-auto ml-4"
-        />
-      </div>
-
-      {/* Sökfältet */}
-      <div className="mb-4 flex justify-center w-full">
-        <div className="flex justify-center w-full max-w-lg">
-          <Search input={selectedSearch} setInput={handleSearch} />
-        </div>
-      </div>
-
-      {/* Om det finns bokmärkta Pokémon */}
-      {filteredFavorites.length > 0 ? (
-        <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
-          <div className="flex flex-wrap justify-start gap-4 pb-4">
+    <div className="min-h-screen flex flex-col">
+      {/* Hero*/}
+      <Hero
+        title="Your Favorite Pokémons"
+        subtitle="Here are all the Pokémons you've bookmarked. Explore and manage your collection!"
+        image="https://media.tenor.com/7guvvXVPhG0AAAAi/pikachu-pokemon.gif"
+      >
+        <Search input={input} setInput={handleSearch} width="md:w-[600px]" />
+      </Hero>
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Om det finns bokmärkta Pokémon */}
+        {filteredFavorites.length > 0 ? (
+          <div className="flex flex-wrap justify-center lg:justify-start gap-4 pb-4">
             {filteredFavorites.map((pokemon) => (
               // Använd PokemonCard för att rendera varje Pokémon
               <div key={pokemon.id} className="flex-shrink-0">
@@ -78,12 +71,19 @@ const BookmarksPage = () => {
               </div>
             ))}
           </div>
-        </div>
-      ) : (
-        <p className="text-center text-lg text-gray-500">
-          Inga bokmärkta Pokémon.
-        </p>
-      )}
+        ) : (
+          <div className="flex flex-col items-center space-y-2">
+            <img
+              src="https://media.tenor.com/lc0bFgqDj4gAAAAi/pikachu-triste.gif"
+              alt="No Pokémon found"
+              className="w-32"
+            />
+            <p className="text-center text-lg text-gray-500">
+              No bookmarked Pokémon...
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

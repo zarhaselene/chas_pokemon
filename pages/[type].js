@@ -1,14 +1,14 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
 import PokemonCard from "./components/PokemonCard";
 import LoadMoreButton from "./components/LoadMoreButton";
 import typeDescriptions from "../utils/typeDescriptions";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import Search from "./components/Search";
 
 export default function PokemonTypePage() {
   const router = useRouter();
-  const { type } = router.query; // Get Pokémon type from URL
+  const {type} = router.query; // Get Pokémon type from URL
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(5); // Start with 5 Pokémon
@@ -56,7 +56,7 @@ export default function PokemonTypePage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen bg-red-500">
+      <div className="flex flex-col justify-center items-center min-h-screen bg-red-500">
         <div className="w-32 h-32 animate-bounce">
           <img
             src="https://media.tenor.com/rbx3ph5SLRUAAAAj/pikachu-pokemon.gif"
@@ -73,7 +73,7 @@ export default function PokemonTypePage() {
   // Show if no Pokémons with this type exist
   if (!filteredPokemonList.length)
     return (
-      <div className="h-screen flex flex-col justify-center items-center">
+      <div className="min-h-screen flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center space-y-6">
           <img
             src="https://media.tenor.com/lc0bFgqDj4gAAAAi/pikachu-triste.gif"
@@ -102,7 +102,7 @@ export default function PokemonTypePage() {
     );
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <div className="flex flex-col items-center">
         <h1 className="text-3xl font-bold text-center mt-8">
           {type.charAt(0).toUpperCase() + type.slice(1)} Pokémon
@@ -116,29 +116,27 @@ export default function PokemonTypePage() {
           <Search input={input} setInput={setInput} width="md:w-[600px]" />
         </div>
       </div>
-
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{delay: 0.3, duration: 0.6}}
           className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6"
         >
           {filteredPokemonList.slice(0, visible).map((pokemon) => (
             <motion.div
               key={pokemon.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.5}}
             >
               <PokemonCard pokemon={pokemon} />
             </motion.div>
           ))}
         </motion.div>
       </div>
-
       {/* Load More Button */}
-      <div className="text-center mb-5">
+      <div className="block text-center mb-5">
         <LoadMoreButton
           visible={visible}
           total={filteredPokemonList.length}

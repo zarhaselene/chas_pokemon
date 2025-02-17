@@ -5,16 +5,16 @@
 - Hero component and add it to bookmarks?
 */
 
-import { useContext, useState } from "react";
-import { motion } from "framer-motion";
-import { usePokemon } from "./context/PokemonContext";
+import {useContext, useState} from "react";
+import {motion} from "framer-motion";
+import {usePokemon} from "./context/PokemonContext";
 import PokemonCard from "./components/PokemonCard";
 import LoadMoreButton from "./components/LoadMoreButton";
 import Hero from "./components/Hero";
 import Search from "./components/Search";
 
 export default function Home() {
-  const { searchInput, setSearchInput, pokemons, loading, filteredPokemons } =
+  const {searchInput, setSearchInput, pokemons, loading, filteredPokemons} =
     usePokemon();
 
   const [visible, setVisible] = useState(5);
@@ -77,17 +77,17 @@ export default function Home() {
 
       <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{delay: 0.3, duration: 0.6}}
           className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6"
         >
           {filteredPokemons.slice(0, visible).map((pokemon) => (
             <motion.div
               key={pokemon.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.5}}
             >
               <PokemonCard pokemon={pokemon} />
             </motion.div>
@@ -108,14 +108,16 @@ export default function Home() {
           <h3 className="text-xl text-center font-semibold">
             Pokémon Theme Song
           </h3>
-          <iframe
-            className="w-full h-96 mt-5 rounded-xl shadow-2xl"
-            src="https://www.youtube-nocookie.com/embed/6xKWiCMKKJg"
-            title="Pokémon Video"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <div className="w-full max-w-xl aspect-video mt-5 rounded-xl shadow-2xl overflow-hidden">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/6xKWiCMKKJg"
+              title="Pokémon Video"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         </div>
       </div>
     </div>
