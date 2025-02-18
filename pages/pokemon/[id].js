@@ -1,18 +1,18 @@
-import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import FavoriteBtn from "../components/FavoriteBtn";
-import {FaArrowLeftLong, FaArrowRightLong} from "react-icons/fa6";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 // Type elements for each type of pokemon and their weaknesses and strengths
 const typeChart = {
-  normal: {weak: ["fighting"], strong: []},
+  normal: { weak: ["fighting"], strong: [] },
   fire: {
     weak: ["water", "rock", "ground"],
     strong: ["grass", "bug", "ice", "steel"],
   },
-  water: {weak: ["electric", "grass"], strong: ["fire", "ground", "rock"]},
-  electric: {weak: ["ground"], strong: ["water", "flying"]},
+  water: { weak: ["electric", "grass"], strong: ["fire", "ground", "rock"] },
+  electric: { weak: ["ground"], strong: ["water", "flying"] },
   grass: {
     weak: ["fire", "ice", "poison", "flying", "bug"],
     strong: ["water", "ground", "rock"],
@@ -25,7 +25,7 @@ const typeChart = {
     weak: ["psychic", "fairy"],
     strong: ["normal", "ice", "rock", "bug", "dark", "steel"],
   },
-  poison: {weak: ["ground", "psychic"], strong: ["grass", "fairy"]},
+  poison: { weak: ["ground", "psychic"], strong: ["grass", "fairy"] },
   ground: {
     weak: ["water", "ice", "grass"],
     strong: ["fire", "electric", "poison", "rock", "steel"],
@@ -34,7 +34,7 @@ const typeChart = {
     weak: ["electric", "ice", "rock"],
     strong: ["grass", "fighting", "bug"],
   },
-  psychic: {weak: ["bug", "ghost", "dark"], strong: ["fighting", "poison"]},
+  psychic: { weak: ["bug", "ghost", "dark"], strong: ["fighting", "poison"] },
   bug: {
     weak: ["fire", "flying", "rock"],
     strong: ["grass", "psychic", "dark"],
@@ -43,14 +43,14 @@ const typeChart = {
     weak: ["water", "grass", "fighting", "ground", "steel"],
     strong: ["fire", "ice", "flying", "bug"],
   },
-  ghost: {weak: ["ghost", "dark"], strong: ["psychic", "ghost"]},
-  dragon: {weak: ["ice", "dragon", "fairy"], strong: ["dragon"]},
-  dark: {weak: ["fighting", "fairy", "bug"], strong: ["psychic", "ghost"]},
+  ghost: { weak: ["ghost", "dark"], strong: ["psychic", "ghost"] },
+  dragon: { weak: ["ice", "dragon", "fairy"], strong: ["dragon"] },
+  dark: { weak: ["fighting", "fairy", "bug"], strong: ["psychic", "ghost"] },
   steel: {
     weak: ["fire", "fighting", "ground"],
     strong: ["ice", "rock", "fairy"],
   },
-  fairy: {weak: ["steel", "poison"], strong: ["dragon", "dark", "fighting"]},
+  fairy: { weak: ["steel", "poison"], strong: ["dragon", "dark", "fighting"] },
 };
 
 // Colors for each type
@@ -77,7 +77,7 @@ const typeColors = {
 
 export default function PokemonInfoPage() {
   const router = useRouter();
-  const {id} = router.query; // Get id from url
+  const { id } = router.query; // Get id from url
 
   const [pokemon, setPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,13 +124,13 @@ export default function PokemonInfoPage() {
       if (typeInfo) {
         typeInfo.weak.forEach((weakness) => {
           if (!pokemonTypes.includes(weakness)) {
-            weaknesses.push({type: weakness});
+            weaknesses.push({ type: weakness });
           }
         });
 
         typeInfo.strong.forEach((strength) => {
           if (!pokemonTypes.includes(strength)) {
-            strengths.push({type: strength});
+            strengths.push({ type: strength });
           }
         });
       }
@@ -153,7 +153,7 @@ export default function PokemonInfoPage() {
     };
   };
 
-  const {weaknesses, strengths} = getTypeAdvantages(pokemon.types);
+  const { weaknesses, strengths } = getTypeAdvantages(pokemon.types);
 
   // Loading text
   if (loading) return <p className="text-center mt-5">Loading Pokémons...</p>;
@@ -179,8 +179,7 @@ export default function PokemonInfoPage() {
       <div className="flex flex-row items-center mb-5">
         <Link
           href="/"
-          className=" flex flex-row items-center gap-2 text-blue-500 hover:underline "
-        >
+          className=" flex flex-row items-center gap-2 text-blue-500 hover:underline ">
           <FaArrowLeftLong className="text-blue-500" />
           Back
         </Link>
@@ -226,7 +225,7 @@ export default function PokemonInfoPage() {
                   : `#${pokemon.id}`}
               </span>
             </h2>
-            <FavoriteBtn pokemon={{id: pokemon.id, name: pokemon.name}} />
+            <FavoriteBtn pokemon={{ id: pokemon.id, name: pokemon.name }} />
           </div>
           {/* Image of Pokemons, normal & Shiny */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 p-5 m-4 ">
@@ -255,8 +254,7 @@ export default function PokemonInfoPage() {
                     className={`cursor-default text-white p-4 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center ${
                       typeColors[typesObj.type.name]
                     } capitalize || "bg-gray-500`}
-                    key={index}
-                  >
+                    key={index}>
                     {typesObj.type.name}
                   </li>
                 ))}
@@ -303,8 +301,9 @@ export default function PokemonInfoPage() {
                         ? "bg-orange-500 rounded-full"
                         : "bg-green-500 rounded-full"
                     }`}
-                    style={{width: `${Math.min(statsObj.base_stat, 100)}%`}}
-                  ></div>
+                    style={{
+                      width: `${Math.min(statsObj.base_stat, 100)}%`,
+                    }}></div>
                 </div>
               </div>
             ))}
@@ -316,8 +315,7 @@ export default function PokemonInfoPage() {
                 {pokemon.abilities.map((abilityObj, index) => (
                   <span
                     key={index}
-                    className="bg-gray-100 px-3 py-1 rounded-md capitalize "
-                  >
+                    className="bg-gray-100 px-3 py-1 rounded-md capitalize ">
                     {abilityObj.ability.name}
                   </span>
                 ))}
@@ -326,7 +324,7 @@ export default function PokemonInfoPage() {
 
             {/* Display weaknesses and strengths */}
             <div className="flex gap-8 justify-center flex-col sm:flex-row  m-2 rounded-md">
-              <div className="flex flex-col  sm:border-r-2 pr-8 ">
+              <div className="flex flex-col  sm:border-r-2">
                 <h2 className="text-xl font-semibold mb-4">Weaknesses:</h2>
                 <ul className="grid grid-cols-2 gap-2">
                   {weaknesses.length ? (
@@ -335,8 +333,7 @@ export default function PokemonInfoPage() {
                         className={`cursor-default text-white p-1 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                           typeColors[weakness.type]
                         } || "bg-gray-500`}
-                        key={index}
-                      >
+                        key={index}>
                         {weakness.type}
                       </li>
                     ))
@@ -355,8 +352,7 @@ export default function PokemonInfoPage() {
                         className={`cursor-default text-white p-1 rounded-md font-semibold text-xs w-16 text center flex justify-center items-center capitalize  ${
                           typeColors[strength.type]
                         } || "bg-gray-500`}
-                        key={index}
-                      >
+                        key={index}>
                         {strength.type}
                       </li>
                     ))
