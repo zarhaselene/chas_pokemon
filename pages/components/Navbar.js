@@ -1,4 +1,4 @@
-import {React, useState, useEffect, useContext} from "react";
+import { React, useState, useEffect, useContext } from "react";
 import {
   Heart,
   User,
@@ -45,13 +45,13 @@ const typeColors = {
   normal: "bg-gray-500",
 };
 
-import {RxCrossCircled} from "react-icons/rx";
-import {FaSearch} from "react-icons/fa";
+import { RxCrossCircled } from "react-icons/rx";
+import { FaSearch } from "react-icons/fa";
 import Search from "./Search.js";
-import {usePokemon} from "../context/PokemonContext.js";
+import { usePokemon } from "../context/PokemonContext.js";
 
 import Link from "next/link";
-import {motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [types, setTypes] = useState([]);
@@ -62,7 +62,7 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [input, setInput] = useState("");
 
-  const {searchInput, setSearchInput, searchResults, pokemons, loading} =
+  const { searchInput, setSearchInput, searchResults, pokemons, loading } =
     usePokemon();
 
   const filteredPokemons = pokemons.filter((pokemon) => {
@@ -145,13 +145,12 @@ const Header = () => {
           <AnimatePresence>
             <motion.div
               className="flex items-center"
-              whileHover={{y: [0, -9, 0]}}
+              whileHover={{ y: [0, -9, 0] }}
               transition={{
                 duration: 0.9,
                 ease: "easeIn",
                 repeat: Infinity,
-              }}
-            >
+              }}>
               <Link href="/">
                 <motion.img
                   src="pokeball.png"
@@ -173,8 +172,7 @@ const Header = () => {
                       activePage === "home"
                         ? "underline underline-offset-2 font-semibold"
                         : "text-white"
-                    } `}
-                  >
+                    } `}>
                     Home
                   </a>
                 </Link>
@@ -189,8 +187,7 @@ const Header = () => {
                     activePage === "types"
                       ? "underline underline-offset-2 font-semibold"
                       : "text-white"
-                  } `}
-                >
+                  } `}>
                   Pokémon Types
                   <ChevronDown
                     size={16}
@@ -203,14 +200,13 @@ const Header = () => {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
-                      initial={{opacity: 0, y: -10}}
-                      animate={{opacity: 1, y: 0}}
-                      exit={{opacity: 0, y: -10}}
-                      transition={{duration: 0.2}}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
                       onMouseEnter={() => setIsOpen(true)}
                       onMouseLeave={() => setIsOpen(false)}
-                      className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-lg z-10 overflow-hidden border-2 border-red-500"
-                    >
+                      className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-lg z-10 overflow-hidden border-2 border-red-500">
                       <div className="grid grid-cols-2 gap-2 p-3">
                         {types.map((type) => {
                           const IconComponent = getTypeIcon(type.name);
@@ -219,12 +215,10 @@ const Header = () => {
                               key={type.name}
                               href={`/${type.name}`}
                               passHref
-                              legacyBehavior
-                            >
+                              legacyBehavior>
                               <a
                                 className="relative flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 hover:bg-red-200"
-                                onClick={() => setIsOpen(false)}
-                              >
+                                onClick={() => setIsOpen(false)}>
                                 <div className="relative">
                                   <div
                                     className="w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
@@ -233,8 +227,7 @@ const Header = () => {
                                       boxShadow: `0 2px 8px ${getTypeColor(
                                         type.name
                                       )}66`,
-                                    }}
-                                  >
+                                    }}>
                                     <IconComponent
                                       size={18}
                                       className="text-white"
@@ -263,8 +256,7 @@ const Header = () => {
                     activePage === "service"
                       ? "underline underline-offset-2 font-semibold"
                       : "text-white"
-                  } `}
-                >
+                  } `}>
                   Services
                 </a>
               </li>
@@ -276,8 +268,7 @@ const Header = () => {
                     activePage === "contact"
                       ? "underline underline-offset-2 font-semibold"
                       : "text-white"
-                  } `}
-                >
+                  } `}>
                   Contact
                 </a>
               </li>
@@ -293,22 +284,20 @@ const Header = () => {
                   className="inline-block p-2 cursor-pointer"
                   whileHover={{
                     scale: 1.1,
-                    transition: {type: "spring", stiffness: 300, damping: 20},
+                    transition: { type: "spring", stiffness: 300, damping: 20 },
                   }}
                   whileTap={{
                     scale: 0.95,
-                    transition: {type: "spring", stiffness: 500, damping: 25},
-                  }}
-                >
+                    transition: { type: "spring", stiffness: 500, damping: 25 },
+                  }}>
                   <motion.div
-                    initial={{scale: 1, y: 0}}
+                    initial={{ scale: 1, y: 0 }}
                     transition={{
                       type: "spring",
                       stiffness: 250,
                       damping: 20,
                       duration: 0.3,
-                    }}
-                  >
+                    }}>
                     <Heart
                       fill={activePage === "bookMark" ? "white" : "transparent"}
                       className={`text-white transition-all duration-300 ${
@@ -344,11 +333,10 @@ const Header = () => {
 
                 {searchOpen ? (
                   <motion.div
-                    initial={{opacity: 0, y: -10}}
-                    animate={{opacity: 1, y: 0}}
-                    exit={{opacity: 0, y: -10}}
-                    transition={{duration: 0.5}}
-                  >
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.5 }}>
                     <input
                       placeHolder="Search by name or ID"
                       onChange={(e) => setInput(e.target.value)}
@@ -362,8 +350,7 @@ const Header = () => {
                           return (
                             <li
                               key={index}
-                              className="flex gap-2 justify-start items-center border-2 rounded-xl w-full p-2 mb-2"
-                            >
+                              className="flex gap-2 justify-start items-center border-2 rounded-xl w-full p-2 mb-2">
                               <div className="flex flex-col justify-start items-start">
                                 <span className="font-bold">
                                   {" "}
@@ -384,8 +371,7 @@ const Header = () => {
                                       <span
                                         className={`text-xs font-bold p-[4px] rounded-lg font-mono ${
                                           typeColors[type] || "bg-gray-500"
-                                        }`}
-                                      >
+                                        }`}>
                                         {type}
                                       </span>
                                     );
@@ -399,8 +385,7 @@ const Header = () => {
                                   onClick={() => {
                                     setSearchOpen(false);
                                     setInput("");
-                                  }}
-                                >
+                                  }}>
                                   <img
                                     src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
                                     alt={pokemon.name}
@@ -435,8 +420,7 @@ const Header = () => {
               </button>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden text-white hover:text-red-200 transition-colors"
-              >
+                className="md:hidden text-white hover:text-red-200 transition-colors">
                 <Menu size={20} />
               </button>
             </AnimatePresence>
@@ -453,8 +437,7 @@ const Header = () => {
                       setMobileMenuOpen(false);
                       setMobileTypesOpen(false);
                     }}
-                    className="block text-gray-900"
-                  >
+                    className="block text-gray-900">
                     Home
                   </a>
                 </Link>
@@ -462,8 +445,7 @@ const Header = () => {
               <li className="p-3 rounded-lg">
                 <button
                   onClick={() => setMobileTypesOpen(!mobileTypesOpen)}
-                  className="flex items-center justify-between w-full text-left text-gray-900"
-                >
+                  className="flex items-center justify-between w-full text-left text-gray-900">
                   Pokémon Types
                   <ChevronDown
                     size={16}
@@ -483,8 +465,7 @@ const Header = () => {
                               setMobileMenuOpen(false);
                               setMobileTypesOpen(false);
                             }}
-                            className="block p-3 rounded-lg transition-all duration-200 hover:bg-red-200"
-                          >
+                            className="block p-3 rounded-lg transition-all duration-200 hover:bg-red-200">
                             {type.name.charAt(0).toUpperCase() +
                               type.name.slice(1)}
                           </a>

@@ -238,7 +238,7 @@ export default function PokemonInfoPage() {
             </div>
             <div className="shadow-lg border-8 border-gray-400 rounded-md ">
               <img
-                className="bg-gradient-to-t from-[#22C1C3] to-[#FDBB2D]  w-[200px] h-[200px] md:w-[300px] md:h-[300px] "
+                className="bg-gradient-to-t from-[#22C1C3] to-[#FDBB2D]  w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
                 src={pokemon.shinyImage}
                 alt={pokemon.name}
               />

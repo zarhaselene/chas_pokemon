@@ -3,7 +3,7 @@ import {useFavorites} from "../context/FavoritesContext";
 import {FaHeart, FaRegHeart} from "react-icons/fa";
 
 const FavoriteBtn = ({pokemon}) => {
-  //  Useing the useFavorites hook to get the favorites and the toggleFavorite function
+  //  Using the useFavorites hook to get the favorites and the toggleFavorite function
   const {favorites, toggleFavorite} = useFavorites();
   // Check if it already is favorited
   const isFavorite = favorites.some((fav) => fav.id === pokemon.id);
