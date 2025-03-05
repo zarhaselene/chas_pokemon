@@ -1,40 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Pokémon Next.js App
 
-## Getting Started
+Welcome to the **Pokémon Next.js App**, a comprehensive Pokédex built with **Next.js**. This app allows users to explore Pokémon, bookmark their favorites, and search by name or ID.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Pokémon Search**: Search for Pokémon by name or ID.
+- **Bookmarking**: Bookmark your favorite Pokémon.
+- **Pokémon Types**: Browse Pokémon by their types.
+- **Detailed Information**: View detailed information about each Pokémon, including abilities, stats, and type advantages.
+- **Responsive Design**: The app is fully responsive and works on all devices.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- **Next.js** - React framework for server-side rendering and static site generation.
+- **React Context API / Redux** - For global state management.
+- **Tailwind CSS** - For styling and responsiveness.
+- **PokeAPI** - Fetching Pokémon data.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Installation
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/pokemon-nextjs-app.git
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Navigate to the project folder:
+   ```sh
+   cd pokemon-nextjs-app
+   ```
 
-## Learn More
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+   or
+   ```sh
+   yarn install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
+   ```sh
+   npm run dev
+   ```
+   or
+   ```sh
+   yarn dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributors
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- [Alexander](https://github.com/AlexanderF02)
+- [Daniel](https://github.com/Dantilldev)
+- [Embla](https://github.com/emblaah)
+- [Joel](https://github.com/Joel050505)
+- [Zarha](https://github.com/zarhaselene)
